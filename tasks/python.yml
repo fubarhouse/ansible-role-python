@@ -1,0 +1,20 @@
+---
+# file: roles/fubarhouse.python/tasks/python.yml
+
+- name: "Python | Install"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  shell: "{{ pyenv_location }} install {{ python_version }}"
+  when: "'{{ python_version }}' not in '{{ python_installed.stdout }}'"
+
+- name: "Python | Initializing"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  raw: echo 'eval "$({{ pyenv_location }} init -)"' >> ~/.bashrc
+  when: not pyenv_installed.stat.exists
+
+- name: "Python | Aliasing"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  shell: "{{ pyenv_location }} global {{ python_version }}"
+  when: not pyenv_installed.stat.exists

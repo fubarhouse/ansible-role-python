@@ -1,0 +1,19 @@
+---
+# vagrant user
+vagrant_user: "vagrant"
+
+# locations
+pyenv_location: "/home/vagrant/.pyenv/bin/pyenv"
+python_location: "/usr/bin/python"
+pip_location: "/home/vagrant/.pyenv/shims/pip"
+
+# python version
+python_version: "3.5.0"
+
+# python modules
+python_modules:
+  - { name: "virtualenv" }
+  - { name: "pyOpenSSL" }
+  - { name: "ndg-httpsclient" }
+  - { name: "pyasn1" }
+  - { name: "Django" }

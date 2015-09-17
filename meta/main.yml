@@ -1,0 +1,19 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: fubarhouse
+  description: Provisions python via pyenv
+  license: "license (BSD, MIT)"
+  min_ansible_version: 1.9.2
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  categories:
+    - system
+    - database
+    - development

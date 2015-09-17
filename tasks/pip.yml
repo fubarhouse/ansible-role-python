@@ -1,0 +1,26 @@
+---
+# file: roles/fubarhouse.python/tasks/pip.yml
+
+- name: "Pip | Detect modules"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  shell: "{{ pip_location }} list"
+  register: pip_modules_installed
+  ignore_errors: yes
+  no_log: yes
+
+- name: "Pip | Install modules"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  shell: "{{ pip_location }} install {{ item.name }}"
+  with_items: "{{ python_modules }}"
+  when: "'{{ item.name }}' not in '{{ pip_modules_installed.stdout }}'"
+  ignore_errors: yes
+
+- name: "Pip | Update modules"
+  sudo: yes
+  sudo_user: "{{ vagrant_user }}"
+  shell: "{{ pip_location }} install {{ item.name }} --upgrade"
+  with_items: "{{ python_modules }}"
+  when: "'{{ item.name }}' in '{{ pip_modules_installed.stdout }}'"
+  ignore_errors: yes
