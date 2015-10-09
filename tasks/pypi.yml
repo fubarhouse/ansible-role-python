@@ -1,0 +1,8 @@
+---
+# file: roles/fubarhouse.python/tasks/pypi.yml
+
+- name: "PyPI | Ensure installed and updated"
+  sudo: yes
+  sudo_user: "{{ ansible_ssh_user }}"
+  pip: name={{ item.name }} state=latest executable={{ pypi_location }}
+  with_items: "{{ pypi_modules }}"

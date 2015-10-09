@@ -1,20 +1,31 @@
 ---
 # file: roles/fubarhouse.python/tasks/python.yml
 
+- name: "Python | Check python versions"
+  sudo: yes
+  sudo_user: "{{ ansible_ssh_user }}"
+  shell: "sudo -iu {{ ansible_ssh_user }} {{ pyenv_location }} versions"
+  register: python_installed
+  ignore_errors: yes
+  no_log: yes
+
 - name: "Python | Install"
   sudo: yes
-  sudo_user: "{{ vagrant_user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: "{{ pyenv_location }} install {{ python_version }}"
   when: "'{{ python_version }}' not in '{{ python_installed.stdout }}'"
 
-- name: "Python | Initializing"
+- name: "Python | Check initialization"
   sudo: yes
-  sudo_user: "{{ vagrant_user }}"
-  raw: echo 'eval "$({{ pyenv_location }} init -)"' >> ~/.bashrc
-  when: not pyenv_installed.stat.exists
+  sudo_user: "{{ ansible_ssh_user }}"
+  shell: cat ~/.bashrc | grep "{{ pyenv_location }} init -"
+  register: python_is_installed
+  ignore_errors: yes
+  no_log: yes
 
 - name: "Python | Aliasing"
   sudo: yes
-  sudo_user: "{{ vagrant_user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: "{{ pyenv_location }} global {{ python_version }}"
-  when: not pyenv_installed.stat.exists
+  when: "'{{ python_version }}' not in '{{ python_installed.stdout }}'"
+  # when: "'{{ pyenv_location }} init -' not in {{ python_is_installed }}"

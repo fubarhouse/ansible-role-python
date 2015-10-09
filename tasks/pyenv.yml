@@ -1,25 +1,22 @@
 ---
 # file: roles/fubarhouse.python/tasks/pyenv.yml
 
-- name: "PyEnv | Check for python"
+- name: "PyEnv | Check for pyenv"
   sudo: yes
-  sudo_user: "{{ vagrant_user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   stat: path={{ pyenv_location }}
   register: pyenv_installed
   ignore_errors: yes
   no_log: yes
 
-- name: "PyEnv | Check python versions"
-  sudo: yes
-  sudo_user: "{{ vagrant_user }}"
-  shell: "sudo -iu {{ vagrant_user }} {{ pyenv_location }} versions"
-  register: python_installed
-  when: pyenv_installed.stat.exists
-  ignore_errors: yes
-  no_log: yes
-
 - name: "PyEnv | Install"
   sudo: yes
-  sudo_user: "{{ vagrant_user }}"
-  shell: curl -L https://raw.github.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+  sudo_user: "{{ ansible_ssh_user }}"
+  shell: curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+  when: not pyenv_installed.stat.exists
+
+- name: "PyEnv | Initializing"
+  sudo: yes
+  sudo_user: "{{ ansible_ssh_user }}"
+  raw: echo 'eval "$({{ pyenv_location }} init -)"' >> ~/.bashrc
   when: not pyenv_installed.stat.exists
