@@ -2,21 +2,42 @@
 # file: roles/fubarhouse.python/tasks/pyenv.yml
 
 - name: "PyEnv | Check for pyenv"
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
   stat: path={{ pyenv_location }}
   register: pyenv_installed
   ignore_errors: yes
   no_log: yes
 
+- name: "PyEnv | Create directory"
+  become: yes
+  become_user: root
+  file:
+    path: "{{ pyenvinstall_location }}"
+    state: directory
+    mode: 0777
+    owner: "{{ ansible_ssh_user }}"
+    recurse: yes
+  when: not pyenv_installed.stat.exists
+
+- name: PyEnv | Ensure repository is up to date
+  become: no
+  become_user: "{{ ansible_ssh_user }}"
+  git: repo=https://github.com/yyuu/pyenv-installer.git
+       dest={{ pyenvinstall_location }}
+       clone=yes
+       update=yes
+       force=yes
+       version=master
+
 - name: "PyEnv | Install"
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
-  shell: curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
+  shell: "cd {{ pyenvinstall_location }} && python setup.py install"
   when: not pyenv_installed.stat.exists
 
 - name: "PyEnv | Initializing"
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
   raw: echo 'eval "$({{ pyenv_location }} init -)"' >> ~/.bashrc
   when: not pyenv_installed.stat.exists

@@ -6,6 +6,7 @@ vagrant_user: "vagrant"
 python_version: "3.5.0"
 
 # locations
+pyenvinstall_location: "/opt/pyenv_installer"
 pyenv_location: "/home/vagrant/.pyenv/bin/pyenv"
 python_location: "/usr/bin/python"
 pypi_location: "/home/vagrant/.pyenv/versions/{{ python_version }}/bin/pip"
