@@ -8,7 +8,7 @@ Given the current state of this role, it is unlikely I will need to revisit it i
 
 ## Requirements
 
-This module makes full use of Ansible-based modules and does not have any dependencies.
+This module makes full use of Ansible-based modules and does not have any requirements.
 
 ## Role Variables
 
@@ -72,7 +72,7 @@ pypi_modules:
 
 ## Dependencies
 
-  none
+  This module makes full use of Ansible-based modules and does not have any dependencies.
 
 ## Example Playbook
 
@@ -93,4 +93,5 @@ MIT / BSD
 
 ## Author Information
 
-This role was created in 2015 by [Karl Hepworth](https://twitter.com/fubarhouse).
+This role was created in 2015 by [Karl Hepworth](https://twitter.com/fubarhouse), it was redeveloped in 2016 after the complexity was compromising the functionality and reliability.
+
