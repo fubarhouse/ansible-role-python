@@ -29,7 +29,7 @@ pypi_path: "versions/{{ python_version }}/bin"
 
 pyenv_exec_main: "pyenv"
 pyenv_exec_updater: "bin/pyenv-update"
-python_exec: "/usr/bin/python"
+python_exec: "python"
 pypi_exec: "pip"
 
 # python modules
