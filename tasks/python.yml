@@ -4,7 +4,7 @@
 - name: "Python | Check python versions"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ pyenv_location }} versions"
+  shell: "{{ pyenv_location }}/{{ pyenv_path_main }}/{{ pyenv_exec_main }} versions"
   register: python_installed
   ignore_errors: yes
   no_log: yes
@@ -12,13 +12,13 @@
 - name: "Python | Install"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ pyenv_location }} install {{ python_version }}"
+  shell: "{{ pyenv_location }}/{{ pyenv_path_main }}/{{ pyenv_exec_main }} install {{ python_version }}"
   when: "'{{ python_version }}' not in '{{ python_installed.stdout }}'"
 
 - name: "Python | Check initialization"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: cat ~/.bashrc | grep "{{ pyenv_location }} init -"
+  shell: "cat ~/.bashrc | grep '{{ pyenv_location }}'"
   register: python_is_installed
   ignore_errors: yes
   no_log: yes
@@ -26,6 +26,6 @@
 - name: "Python | Aliasing"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ pyenv_location }} global {{ python_version }}"
+  shell: "{{ pyenv_location }}/{{ pyenv_path_main }}/{{ pyenv_exec_main }} global {{ python_version }}"
   when: "'{{ python_version }}' not in '{{ python_installed.stdout }}'"
   # when: "'{{ pyenv_location }} init -' not in {{ python_is_installed }}"

@@ -1,43 +1,66 @@
 ---
 # file: roles/fubarhouse.python/tasks/pyenv.yml
 
+- name: "PyEnv | Clean-up"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
+  file:
+    path: "{{ pyenv_location }}"
+    state: absent
+  when: pyenv_clean_install
+
 - name: "PyEnv | Check for pyenv"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  stat: path={{ pyenv_location }}
+  stat:
+    path: "{{ pyenv_location }}"
   register: pyenv_installed
   ignore_errors: yes
   no_log: yes
 
-- name: "PyEnv | Create directory"
+- name: "PyEnv | Check directory permissions"
   become: yes
-  become_user: root
+  become_user: "{{ ansible_ssh_user }}"
   file:
-    path: "{{ pyenvinstall_location }}"
+    path: "{{ pyenv_location }}"
     state: directory
     mode: 0777
     owner: "{{ ansible_ssh_user }}"
     recurse: yes
   when: not pyenv_installed.stat.exists
 
-- name: PyEnv | Ensure repository is up to date
+- name: PyEnv | Cloning/Updating
   become: no
   become_user: "{{ ansible_ssh_user }}"
-  git: repo=https://github.com/yyuu/pyenv-installer.git
-       dest={{ pyenvinstall_location }}
-       clone=yes
-       update=yes
-       force=yes
-       version=master
+  git:
+    repo: "{{ repo_pyenv }}"
+    dest: "{{ pyenv_location }}"
+    clone: yes
+    update: yes
+    force: yes
+    version: master
+    recursive: false
 
-- name: "PyEnv | Install"
+- name: PyEnv | Cloning/Updating updater
+  become: no
+  become_user: "{{ ansible_ssh_user }}"
+  git:
+    repo: "{{ repo_pyenv_updater }}"
+    dest: "{{ pyenv_location }}/{{ pyenv_path_updater }}"
+    clone: yes
+    update: yes
+    force: yes
+    version: master
+    recursive: false
+  # when: not pyenv_installed.stat.exists
+
+- name: PyEnv | Ensure updated"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "cd {{ pyenvinstall_location }} && python setup.py install"
-  when: not pyenv_installed.stat.exists
+  shell: "{{ pyenv_location }}/{{ pyenv_path_updater }}/{{ pyenv_exec_updater }}"
 
 - name: "PyEnv | Initializing"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  raw: echo 'eval "$({{ pyenv_location }} init -)"' >> ~/.bashrc
+  raw: echo 'eval "$({{ pyenv_location }}/{{ pyenv_path_main }}/{{ pyenv_exec_main }} init -)"' >> ~/.bashrc
   when: not pyenv_installed.stat.exists

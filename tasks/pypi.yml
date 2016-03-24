@@ -4,5 +4,8 @@
 - name: "PyPI | Ensure installed and updated"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  pip: name={{ item.name }} state=latest executable={{ pypi_location }}
+  pip:
+    name: "{{ item.name }}"
+    state: latest
+    executable: "{{ pyenv_location }}/{{ pypi_path }}/{{ pypi_exec }}"
   with_items: "{{ pypi_modules }}"

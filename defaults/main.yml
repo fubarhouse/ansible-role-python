@@ -1,20 +1,38 @@
 ---
-# vagrant user
-vagrant_user: "vagrant"
+
+# process controls
+fubarhouse_python_install_pyenv: true
+fubarhouse_python_install_python: true
+fubarhouse_python_install_pypi: true
+
+# development controls
+pyenv_clean_install: false
 
 # python version
-python_version: "3.5.0"
+python_version: "3.5.1"
 
-# locations
-pyenvinstall_location: "/opt/pyenv_installer"
-pyenv_location: "/home/vagrant/.pyenv/bin/pyenv"
-python_location: "/usr/bin/python"
-pypi_location: "/home/vagrant/.pyenv/versions/{{ python_version }}/bin/pip"
+# repository urls
+
+repo_pyenv: "https://github.com/yyuu/pyenv.git"
+repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
+
+# paths
+
+pyenv_location: "~/.pyenv"
+
+pyenv_path_main: "bin"
+pyenv_path_updater: "plugins/pyenv-update"
+python_path: "usr/bin"
+pypi_path: "versions/{{ python_version }}/bin"
+
+# executables
+
+pyenv_exec_main: "pyenv"
+pyenv_exec_updater: "bin/pyenv-update"
+python_exec: "/usr/bin/python"
+pypi_exec: "pip"
 
 # python modules
 pypi_modules:
   - { name: "virtualenv" }
-  # - { name: "pyOpenSSL" }
-  # - { name: "ndg-httpsclient" }
   - { name: "pyasn1" }
-  - { name: "Django" }
