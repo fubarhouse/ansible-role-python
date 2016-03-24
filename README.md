@@ -24,6 +24,8 @@ fubarhouse_python_install_pypi: true
 
 ### development controls
 
+If you need to reinstall on provision/reprovision, change this to true.
+
 ````
 pyenv_clean_install: false
 ````
@@ -56,7 +58,7 @@ pypi_path: "versions/{{ python_version }}/bin"
 ````
 pyenv_exec_main: "pyenv"
 pyenv_exec_updater: "bin/pyenv-update"
-python_exec: "/usr/bin/python"
+python_exec: "python"
 pypi_exec: "pip"
 ````
 
@@ -65,8 +67,6 @@ pypi_exec: "pip"
 ````
 pypi_modules:
   - { name: "virtualenv" }
-  - { name: "pyOpenSSL" }
-  - { name: "ndg-httpsclient" }
   - { name: "pyasn1" }
 ```
 
