@@ -5,16 +5,16 @@
   become: yes
   become_user: "{{ ansible_ssh_user }}"
   file:
-    path: "{{ pyenv_location }}"
+    path: "{{ fubarhouse_python.main_dir }}"
     state: absent
-  when: pyenv_clean_install
+  when: fubarhouse_python.clean_install
 
 - name: "PyEnv | Check for pyenv"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
   stat:
-    path: "{{ pyenv_location }}"
-  register: pyenv_installed
+    path: "{{ fubarhouse_python.main_dir }}"
+  register: fubarhouse_python_pyenv_installed
   ignore_errors: yes
   no_log: yes
 
@@ -22,19 +22,19 @@
   become: yes
   become_user: "{{ ansible_ssh_user }}"
   file:
-    path: "{{ pyenv_location }}"
+    path: "{{ fubarhouse_python.main_dir }}"
     state: directory
     mode: 0777
     owner: "{{ ansible_ssh_user }}"
     recurse: yes
-  when: not pyenv_installed.stat.exists
+  when: not fubarhouse_python_pyenv_installed.stat.exists
 
 - name: PyEnv | Cloning/Updating
   become: no
   become_user: "{{ ansible_ssh_user }}"
   git:
-    repo: "{{ repo_pyenv }}"
-    dest: "{{ pyenv_location }}"
+    repo: "{{ fubarhouse_python.repo_pyenv }}"
+    dest: "{{ fubarhouse_python.main_dir }}"
     clone: yes
     update: yes
     force: yes
@@ -45,8 +45,8 @@
   become: no
   become_user: "{{ ansible_ssh_user }}"
   git:
-    repo: "{{ repo_pyenv_updater }}"
-    dest: "{{ pyenv_location }}/{{ pyenv_path_updater }}"
+    repo: "{{ fubarhouse_python.repo_pyenv_updater }}"
+    dest: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}"
     clone: yes
     update: yes
     force: yes
@@ -57,10 +57,10 @@
 - name: PyEnv | Ensure updated"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ pyenv_location }}/{{ pyenv_path_updater }}/{{ pyenv_exec_updater }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
 
 - name: "PyEnv | Initializing"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  raw: echo 'eval "$({{ pyenv_location }}/{{ pyenv_path_main }}/{{ pyenv_exec_main }} init -)"' >> ~/.bashrc
-  when: not pyenv_installed.stat.exists
+  raw: echo 'eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ updater_exec }} init -)"' >> ~/.bashrc
+  when: not fubarhouse_python_pyenv_installed.stat.exists

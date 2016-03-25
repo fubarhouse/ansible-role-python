@@ -2,10 +2,10 @@
 # file: roles/fubarhouse.python/tasks/main.yml
 
 - include: pyenv.yml
-  when: fubarhouse_python_install_pyenv
+  when: fubarhouse_python.install_pyenv
 
 - include: python.yml
-  when: fubarhouse_python_install_python
+  when: fubarhouse_python.install_python
 
 - include: pypi.yml
-  when: fubarhouse_python_install_pypi
+  when: fubarhouse_python.install_pypi

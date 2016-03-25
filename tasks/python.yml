@@ -4,21 +4,21 @@
 - name: "Python | Check python versions"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ pyenv_location }}/{{ pyenv_path_main }}/{{ pyenv_exec_main }} versions"
-  register: python_installed
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} versions | grep '{{ fubarhouse_python.python_version }}'"
+  register: fubarhouse_python_python_installed
   ignore_errors: yes
   no_log: yes
 
 - name: "Python | Install"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ pyenv_location }}/{{ pyenv_path_main }}/{{ pyenv_exec_main }} install {{ python_version }}"
-  when: "'{{ python_version }}' not in '{{ python_installed.stdout }}'"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} install {{ fubarhouse_python.python_version }}"
+  when: "'{{ fubarhouse_python.python_version }}' not in '{{ fubarhouse_python_python_installed.stdout }}'"
 
 - name: "Python | Check initialization"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "cat ~/.bashrc | grep '{{ pyenv_location }}'"
+  shell: "cat ~/.bashrc | grep '{{ fubarhouse_python.main_dir }}'"
   register: python_is_installed
   ignore_errors: yes
   no_log: yes
@@ -26,6 +26,5 @@
 - name: "Python | Aliasing"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ pyenv_location }}/{{ pyenv_path_main }}/{{ pyenv_exec_main }} global {{ python_version }}"
-  when: "'{{ python_version }}' not in '{{ python_installed.stdout }}'"
-  # when: "'{{ pyenv_location }} init -' not in {{ python_is_installed }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global {{ fubarhouse_python.python_version }}"
+  when: "'{{ fubarhouse_python.python_version }}' not in '{{ fubarhouse_python_python_installed.stdout }}'"

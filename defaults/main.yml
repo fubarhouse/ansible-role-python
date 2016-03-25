@@ -1,38 +1,33 @@
 ---
 
-# process controls
-fubarhouse_python_install_pyenv: true
-fubarhouse_python_install_python: true
-fubarhouse_python_install_pypi: true
-
-# development controls
-pyenv_clean_install: false
-
-# python version
-python_version: "3.5.1"
-
-# repository urls
-
-repo_pyenv: "https://github.com/yyuu/pyenv.git"
-repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
-
-# paths
-
-pyenv_location: "~/.pyenv"
-
-pyenv_path_main: "bin"
-pyenv_path_updater: "plugins/pyenv-update"
-python_path: "usr/bin"
-pypi_path: "versions/{{ python_version }}/bin"
-
-# executables
-
-pyenv_exec_main: "pyenv"
-pyenv_exec_updater: "bin/pyenv-update"
-python_exec: "python"
-pypi_exec: "pip"
-
-# python modules
-pypi_modules:
-  - { name: "virtualenv" }
-  - { name: "pyasn1" }
+fubarhouse_python:
+  # Clean install
+  clean_install: false
+  # Process controls
+  install_pyenv: true
+  install_python: true
+  install_pypi: true
+  # Repositories
+  repo_pyenv: "https://github.com/yyuu/pyenv.git"
+  repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
+  # Install directories
+  main_dir: "~/.pyenv"
+  # Install paths
+  main_path: "bin"
+  updater_path: "plugins/pyenv-update"
+  python_path: "usr/bin"
+  pypi_path: "versions/{{ python_version }}/bin"
+  # Executables
+  main_exec: "pyenv"
+  updater_exec: "bin/pyenv-update"
+  python_exec: "/usr/bin/python"
+  pypi_exec: "pip"
+  # Application versions
+  python_version: "3.5.1"
+  # Packages
+  packages:
+    - { name: "virtualenv" }
+    # - { name: "pyOpenSSL" }
+    # - { name: "ndg-httpsclient" }
+    - { name: "pyasn1" }
+    # - { name: "Django" }

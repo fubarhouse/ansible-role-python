@@ -7,5 +7,5 @@
   pip:
     name: "{{ item.name }}"
     state: latest
-    executable: "{{ pyenv_location }}/{{ pypi_path }}/{{ pypi_exec }}"
-  with_items: "{{ pypi_modules }}"
+    executable: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.pypi_path }}/{{ fubarhouse_python.pypi_exec }}"
+  with_items: "{{ fubarhouse_python.packages }}"
