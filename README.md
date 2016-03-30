@@ -12,50 +12,42 @@
 
 ## Role Variables
 
-  Available variables are listed below, along with default values (see `defaults/main.yml`):
+  Copy the defaults/main.yml into the ansible system and add to the playbook, and change the variables accordingly.
 
-  ### Clean install
   ````
-  fubarhouse_python.clean_install: false
-  ````
-  ### Process controls
-  ````
-  fubarhouse_python.install_pyenv: true
-  fubarhouse_python.install_python: true
-  fubarhouse_python.install_pypi: true
-  ````
-  ### Repositories
-  ````
-  fubarhouse_python.repo_pyenv: "https://github.com/yyuu/pyenv.git"
-  fubarhouse_python.repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
-  ````
-  ### Install directories
-  ````
-  fubarhouse_python.main_dir: "~/.pyenv"
-  ````
-  ### Install paths
-  ````
-  fubarhouse_python.main_path: "bin"
-  fubarhouse_python.updater_path: "plugins/pyenv-update"
-  fubarhouse_python.python_path: "usr/bin"
-  fubarhouse_python.pypi_path: "versions/{{ python_version }}/bin"
-  ````
-  ### Executables
-  ````
-  fubarhouse_python.main_exec: "pyenv"
-  fubarhouse_python.updater_exec: "bin/pyenv-update"
-  fubarhouse_python.python_exec: "/usr/bin/python"
-  fubarhouse_python.pypi_exec: "pip"
-  ````
-  ### Application versions
-  ````
-  fubarhouse_python.python_version: "3.5.1"
-  ````
-  ### Packages
-  ````
-  fubarhouse_python.packages:
+
+  fubarhouse_python:
+  # Clean install
+  clean_install: false
+  # Process controls
+  install_pyenv: true
+  install_python: true
+  install_pypi: true
+  # Repositories
+  repo_pyenv: "https://github.com/yyuu/pyenv.git"
+  repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
+  # Install directories
+  main_dir: "~/.pyenv"
+  # Install paths
+  main_path: "bin"
+  updater_path: "plugins/pyenv-update"
+  python_path: "usr/bin"
+  pypi_path: "versions/{{ python_version }}/bin"
+  # Executables
+  main_exec: "pyenv"
+  updater_exec: "bin/pyenv-update"
+  python_exec: "/usr/bin/python"
+  pypi_exec: "pip"
+  # Application versions
+  python_version: "3.5.1"
+  # Packages
+  packages:
     - { name: "virtualenv" }
+    # - { name: "pyOpenSSL" }
+    # - { name: "ndg-httpsclient" }
     - { name: "pyasn1" }
+    # - { name: "Django" }
+
   ````
 
 ## Dependencies

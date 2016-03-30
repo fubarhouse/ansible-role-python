@@ -59,8 +59,16 @@
   become_user: "{{ ansible_ssh_user }}"
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
 
+- name: "PyEnv | Checking initialization"
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
+  raw: cat ~/.bashrc | grep pyenv
+  register: fubarhouse_python_pyenv_init
+  ignore_errors: yes
+  no_log: yes
+
 - name: "PyEnv | Initializing"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  raw: echo 'eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }} init -)"' >> ~/.bashrc
-  when: not fubarhouse_python_pyenv_installed.stat.exists
+  raw: echo 'eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)"' >> ~/.bashrc
+  when: "'pyenv' not in fubarhouse_python_pyenv_init"

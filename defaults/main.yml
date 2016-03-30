@@ -1,8 +1,10 @@
 ---
 
 fubarhouse_python:
+  # Application versions
+  python_version: "3.5.1"
   # Clean install
-  clean_install: false
+  clean_install: true
   # Process controls
   install_pyenv: true
   install_python: true
@@ -11,19 +13,17 @@ fubarhouse_python:
   repo_pyenv: "https://github.com/yyuu/pyenv.git"
   repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
   # Install directories
-  main_dir: "~/.pyenv"
+  main_dir: "/home/{{ ansible_ssh_user }}/.pyenv"
   # Install paths
   main_path: "bin"
   updater_path: "plugins/pyenv-update"
   python_path: "usr/bin"
-  pypi_path: "versions/{{ python_version }}/bin"
+  pypi_path: "versions/3.5.1/bin"
   # Executables
   main_exec: "pyenv"
   updater_exec: "bin/pyenv-update"
   python_exec: "/usr/bin/python"
   pypi_exec: "pip"
-  # Application versions
-  python_version: "3.5.1"
   # Packages
   packages:
     - { name: "virtualenv" }
