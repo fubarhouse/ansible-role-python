@@ -12,7 +12,8 @@
 - name: "Python | Install"
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} install {{ fubarhouse_python.python_version }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} install {{ item }}"
+  with_items: "{{ fubarhouse_python.all_python_versions }}"
   when: "'{{ fubarhouse_python.python_version }}' not in '{{ fubarhouse_python_python_installed.stdout }}'"
 
 - name: "Python | Check initialization"

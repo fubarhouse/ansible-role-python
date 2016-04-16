@@ -19,6 +19,9 @@
   fubarhouse_python:
   # Application versions
   python_version: "3.5.1"
+  # Application versions (non-default)
+  all_python_versions:
+    - 3.5.1
   # Clean install
   clean_install: true
   # Process controls
