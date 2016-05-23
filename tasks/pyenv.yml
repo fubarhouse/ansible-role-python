@@ -67,8 +67,20 @@
   ignore_errors: yes
   no_log: yes
 
-- name: "PyEnv | Initializing"
+- name: PyEnv | Ensure shell profiles are available
   become: yes
   become_user: "{{ ansible_ssh_user }}"
-  raw: echo 'eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)"' >> ~/.bashrc
-  when: "'pyenv' not in fubarhouse_python_pyenv_init"
+  file:
+    path: /home/{{ ansible_ssh_user }}/{{ item.filename }}
+    state: touch
+  with_items: "{{ fubarhouse_python.shell_profiles }}"
+
+- name: PyEnv | Ensure shell profiles are configured
+  become: yes
+  become_user: "{{ ansible_ssh_user }}"
+  lineinfile:
+    dest: "/home/{{ ansible_ssh_user }}/{{ item.filename }}"
+    state: present
+    regexp: '^eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)"'
+    line: 'eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)"'
+  with_items: "{{ fubarhouse_python.shell_profiles }}"
