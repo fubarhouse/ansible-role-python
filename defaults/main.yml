@@ -1,41 +1,15 @@
 ---
 
-fubarhouse_python:
-  # Shell profiles
-  shell_profiles:
-    - { filename: shell }
-    - { filename: .bashrc }
-    - { filename: .bash_profile }
-  # Application versions
-  python_version: "3.5.1"
-  # Application versions (non-default)
-  all_python_versions:
-    - 3.5.1
-  # Clean install
-  clean_install: true
-  # Process controls
-  install_pyenv: true
-  install_python: true
-  install_pypi: true
-  # Repositories
-  repo_pyenv: "https://github.com/yyuu/pyenv.git"
-  repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
-  # Install directories
-  main_dir: "/home/{{ ansible_ssh_user }}/.pyenv"
-  # Install paths
-  main_path: "bin"
-  updater_path: "plugins/pyenv-update"
-  python_path: "usr/bin"
-  pypi_path: "versions/3.5.1/bin"
-  # Executables
-  main_exec: "pyenv"
-  updater_exec: "bin/pyenv-update"
-  python_exec: "/usr/bin/python"
-  pypi_exec: "pip"
-  # Packages
-  packages:
-    - { name: "virtualenv" }
-    # - { name: "pyOpenSSL" }
-    # - { name: "ndg-httpsclient" }
-    - { name: "pyasn1" }
-    # - { name: "Django" }
+python_version: 2.7.11
+python_versions:
+  - 2.7.11
+  - 3.5.1
+
+pypi_path: "versions/{{ python_version }}/bin"
+
+python_packages:
+  - pyyaml
+  - jinja2
+  - virtualenv
+  - pyasn1
+  - Django

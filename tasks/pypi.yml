@@ -3,9 +3,9 @@
 
 - name: "PyPI | Ensure installed and updated"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   pip:
-    name: "{{ item.name }}"
+    name: "{{ item }}"
     state: latest
-    executable: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.pypi_path }}/{{ fubarhouse_python.pypi_exec }}"
-  with_items: "{{ fubarhouse_python.packages }}"
+    executable: "{{ fubarhouse_python.main_dir }}/{{ pypi_path }}/{{ fubarhouse_python.pypi_exec }}"
+  with_items: "{{ python_packages }}"

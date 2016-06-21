@@ -3,15 +3,18 @@
 
 - name: "PyEnv | Clean-up"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "root"
   file:
-    path: "{{ fubarhouse_python.main_dir }}"
+    path: "{{ item }}"
     state: absent
+  with_items:
+   - "{{ fubarhouse_python.main_dir }}"
+   - "{{ fubarhouse_python.pyenv_symlink_exec }}"
   when: fubarhouse_python.clean_install
 
 - name: "PyEnv | Check for pyenv"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   stat:
     path: "{{ fubarhouse_python.main_dir }}"
   register: fubarhouse_python_pyenv_installed
@@ -20,18 +23,18 @@
 
 - name: "PyEnv | Check directory permissions"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "root"
   file:
     path: "{{ fubarhouse_python.main_dir }}"
     state: directory
-    mode: 0777
-    owner: "{{ ansible_ssh_user }}"
+    mode: 0755
+    owner: "{{ fubarhouse_python.user }}"
     recurse: yes
   when: not fubarhouse_python_pyenv_installed.stat.exists
 
 - name: PyEnv | Cloning/Updating
-  become: no
-  become_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
   git:
     repo: "{{ fubarhouse_python.repo_pyenv }}"
     dest: "{{ fubarhouse_python.main_dir }}"
@@ -42,8 +45,8 @@
     recursive: false
 
 - name: PyEnv | Cloning/Updating updater
-  become: no
-  become_user: "{{ ansible_ssh_user }}"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
   git:
     repo: "{{ fubarhouse_python.repo_pyenv_updater }}"
     dest: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}"
@@ -56,31 +59,33 @@
 
 - name: PyEnv | Ensure updated"
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
 
-- name: "PyEnv | Checking initialization"
+- name: PyEnv | Create an executable
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
-  raw: cat ~/.bashrc | grep pyenv
-  register: fubarhouse_python_pyenv_init
-  ignore_errors: yes
-  no_log: yes
+  become_user: "root"
+  file:
+    src: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
+    dest: "{{ fubarhouse_python.pyenv_symlink_exec }}"
+    owner: "{{ fubarhouse_python.user }}"
+    mode: 0755
+    state: link
 
 - name: PyEnv | Ensure shell profiles are available
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   file:
-    path: /home/{{ ansible_ssh_user }}/{{ item.filename }}
+    path: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
     state: touch
   with_items: "{{ fubarhouse_python.shell_profiles }}"
 
 - name: PyEnv | Ensure shell profiles are configured
   become: yes
-  become_user: "{{ ansible_ssh_user }}"
+  become_user: "{{ fubarhouse_user }}"
   lineinfile:
-    dest: "/home/{{ ansible_ssh_user }}/{{ item.filename }}"
+    dest: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
     state: present
-    regexp: '^eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)"'
+    regexp: 'eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)"'
     line: 'eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)"'
   with_items: "{{ fubarhouse_python.shell_profiles }}"

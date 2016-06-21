@@ -1,0 +1,33 @@
+---
+
+fubarhouse_python:
+  # User
+  user: "{{ fubarhouse_user }}"
+  user_dir: "/Users/{{ fubarhouse_user }}"
+  # Shell profiles
+  shell_profiles:
+    - { filename: shell }
+    - { filename: .bashrc }
+    - { filename: .bash_profile }
+  # Clean install
+  clean_install: false
+  # Process controls
+  install_pyenv: true
+  install_python: true
+  install_pypi: true
+  # Repositories
+  repo_pyenv: "https://github.com/yyuu/pyenv.git"
+  repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
+  # Install directories
+  main_dir: "/Users/{{ fubarhouse_user }}/.pyenv"
+  # Install paths
+  main_path: "bin"
+  updater_path: "plugins/pyenv-update"
+  python_path: "usr/bin"
+  # Symlinks
+  pyenv_symlink_exec: "/usr/local/bin/pyenv"
+  # Executables
+  main_exec: "pyenv"
+  updater_exec: "bin/pyenv-update"
+  python_exec: "/usr/bin/python"
+  pypi_exec: "pip"
