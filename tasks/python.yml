@@ -4,17 +4,15 @@
 - name: "Python | Check python versions"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} versions | grep '{{ python_version }}'"
-  register: fubarhouse_python_python_installed
-  ignore_errors: yes
-  no_log: yes
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} versions"
+  register: installed_python_versions
 
 - name: "Python | Install"
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} install {{ item }}"
   with_items: "{{ python_versions }}"
-  when: "'{{ python_version }}' not in '{{ fubarhouse_python_python_installed.stdout }}'"
+  when: item not in installed_python_versions.stdout
 
 - name: "Python | Check initialization"
   become: yes
@@ -28,4 +26,4 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global {{ python_version }}"
-  when: "'{{ python_version }}' not in '{{ fubarhouse_python_python_installed.stdout }}'"
+  when: "'{{ python_version }}' not in '{{ installed_python_versions.stdout }}'"
