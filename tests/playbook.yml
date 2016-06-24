@@ -8,6 +8,6 @@
     python_versions:
       - 2.7
     python_packages:
-      - pyyaml
+      - virtualenv
   roles:
     - { role: ../../fubarhouse.python }
