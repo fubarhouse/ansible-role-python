@@ -1,15 +1,11 @@
 ---
 # file: roles/fubarhouse.python/tasks/pypi.yml
 
-- name: get debug value
+- name: "PyPI | Locate Pip/PyPI"
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "which pip"
-  register: debug_var
-
-- name: print debug value
-  debug:
-    msg: "{{ debug_var }}"
+  register: pypi_exec
 
 - name: "PyPI | Ensure installed and updated"
   become: yes
@@ -17,5 +13,5 @@
   pip:
     name: "{{ item }}"
     state: latest
-    executable: "{{ fubarhouse_python.main_dir }}/{{ pypi_path }}/{{ fubarhouse_python.pypi_exec }}"
+    executable: "{{ pypi_exec.stdout }}"
   with_items: "{{ python_packages }}"
