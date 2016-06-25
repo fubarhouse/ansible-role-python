@@ -7,7 +7,13 @@
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} versions"
   register: installed_python_versions
 
-- name: "Python | Install"
+- name: Python | Install default version"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} install {{ python_version }}"
+  when: '"{{ python_version }}" not in "{{ python_versions }}" and "{{ python_version }}" not in "{{ installed_python_versions.stdout }}"'
+
+- name: "Python | Install all requested versions"
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} install {{ item }}"
