@@ -1,6 +1,16 @@
 ---
 # file: roles/fubarhouse.python/tasks/pypi.yml
 
+- name: get debug value
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "which pip"
+  register: debug_var
+
+- name: print debug value
+  debug:
+    msg: "{{ debug_var }}"
+
 - name: "PyPI | Ensure installed and updated"
   become: yes
   become_user: "{{ fubarhouse_user }}"
