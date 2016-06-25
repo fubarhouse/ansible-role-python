@@ -14,14 +14,6 @@
   with_items: "{{ python_versions }}"
   when: '"{{ item }}" not in installed_python_versions.stdout'
 
-- name: "Python | Check initialization"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "cat ~/.bashrc | grep '{{ fubarhouse_python.main_dir }}'"
-  register: python_is_installed
-  ignore_errors: yes
-  no_log: yes
-
 - name: "Python | Aliasing"
   become: yes
   become_user: "{{ fubarhouse_user }}"
