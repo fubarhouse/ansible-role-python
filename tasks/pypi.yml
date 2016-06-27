@@ -5,7 +5,7 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   set_fact:
-    pypi_exec: "{{ fubarhouse_python.user_dir }/.pyenv/shims/pip"
+    pypi_exec: "{{ fubarhouse_python.user_dir }}/.pyenv/shims/pip"
 
 - name: "PyPI | Ensure installed and updated"
   become: yes
