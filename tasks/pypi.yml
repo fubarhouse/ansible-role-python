@@ -1,17 +1,10 @@
 ---
 # file: roles/fubarhouse.python/tasks/pypi.yml
 
-- name: "PyPI | Locate Pip/PyPI"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  set_fact:
-    pypi_exec: "{{ fubarhouse_python.user_dir }}/.pyenv/shims/pip"
-
 - name: "PyPI | Ensure installed and updated"
   become: yes
   become_user: "{{ fubarhouse_user }}"
   pip:
     name: "{{ item }}"
     state: latest
-    executable: "{{ pypi_exec }}"
   with_items: "{{ python_packages }}"
