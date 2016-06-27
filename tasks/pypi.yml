@@ -4,7 +4,7 @@
 - name: "PyPI | Ensire Installed"
   easy_install:
     name: pip
-    state: installed
+    state: latest
 
 - name: "PyPI | Ensure installed and updated"
   become: yes
