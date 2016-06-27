@@ -1,13 +1,10 @@
 ---
 # file: roles/fubarhouse.python/tasks/pypi.yml
 
-- name: debug
-  shell: "ls {{ fubarhouse_python.main_dir }}"
-  register: temp_var
-
-- name: debug
-  debug:
-    msg: "{{ temp_var.stdout }}"
+- name: "PyPI | Ensire Installed"
+  easy_install:
+    name: pip
+    state: installed
 
 - name: "PyPI | Ensure installed and updated"
   become: yes
@@ -15,5 +12,4 @@
   pip:
     name: "{{ item }}"
     state: latest
-    executable: "{{ fubarhouse_python.main_dir }}/versions/{{ python_version }}/bin/pip"
   with_items: "{{ python_packages }}"
