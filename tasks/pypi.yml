@@ -8,7 +8,7 @@
 
 - name: "PyPI | Ensure installed and updated"
   become: yes
-  become_user: "{{ fubarhouse_user }}"
+  become_user: "root"
   pip:
     name: "{{ item }}"
     state: latest
