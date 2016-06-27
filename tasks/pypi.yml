@@ -7,5 +7,5 @@
   pip:
     name: "{{ item }}"
     state: latest
-    executable: "{{ main_dir }}/versions/{{ python_version }}/bin/pip"
+    executable: "{{ fubarhouse_python.main_dir }}/versions/{{ python_version }}/bin/pip"
   with_items: "{{ python_packages }}"
