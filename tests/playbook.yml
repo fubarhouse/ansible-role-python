@@ -1,12 +1,14 @@
 ---
 
-- hosts: all
+- hosts: localhost
   sudo: true
   vars:
     ansible_ssh_user: root
-    python_version: 2.7
-    python_versions: []
+    python_version: 2.7.11
+    python_versions:
+      - 3.5.2
+      - 2.7.11
     python_packages:
       - virtualenv
   roles:
-    - { role: ../../fubarhouse.python }
+    - { role: ../../ansible-role-python }

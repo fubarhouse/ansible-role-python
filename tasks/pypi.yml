@@ -1,14 +1,18 @@
 ---
 # file: roles/fubarhouse.python/tasks/pypi.yml
 
-- name: "PyPI | Ensire Installed"
+- name: "PyPI | Ensure Installed"
   easy_install:
     name: pip
-    state: latest
+    state: present
+
+- name: "PyPI | Ensure absent"
+  pip:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ python_packages }}"
 
 - name: "PyPI | Ensure installed and updated"
-  become: yes
-  become_user: "root"
   pip:
     name: "{{ item }}"
     state: latest

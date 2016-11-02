@@ -12,6 +12,18 @@
    - "{{ fubarhouse_python.pyenv_symlink_exec }}"
   when: fubarhouse_python.clean_install
 
+- name: PyEnv | Ensure shell profiles are clean
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  lineinfile:
+    dest: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
+    regexp: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -"
+    line: "eval \"$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)\""
+    state: absent
+  with_items: "{{ fubarhouse_python.shell_profiles }}"
+  ignore_errors: yes
+  when: fubarhouse_python.clean_install
+
 - name: "PyEnv | Check for pyenv"
   become: yes
   become_user: "{{ fubarhouse_user }}"
@@ -57,7 +69,7 @@
     recursive: false
   # when: not pyenv_installed.stat.exists
 
-- name: PyEnv | Ensure updated"
+- name: PyEnv | Ensure updated
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
@@ -79,13 +91,23 @@
     path: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
     state: touch
   with_items: "{{ fubarhouse_python.shell_profiles }}"
+  ignore_errors: yes
 
 - name: PyEnv | Ensure shell profiles are configured
   become: yes
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
     dest: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
+    regexp: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -"
+    line: "eval \"$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)\""
     state: present
-    regexp: 'eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)"'
-    line: 'eval "$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)"'
   with_items: "{{ fubarhouse_python.shell_profiles }}"
+  ignore_errors: yes
+
+- name: PyEnv | Remove Shim
+  file:
+    path: "{{ fubarhouse_python.main_dir }}/shims/.pyenv-shim"
+    state: absent
+
+- name: PyEnv | Rehash
+  shell: "{{ fubarhouse_python.pyenv_symlink_exec }} rehash"

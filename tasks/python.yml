@@ -7,7 +7,7 @@
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} versions"
   register: installed_python_versions
 
-- name: Python | Install default version"
+- name: "Python | Install default version"
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} install {{ python_version }}"
@@ -20,8 +20,10 @@
   with_items: "{{ python_versions }}"
   when: '"{{ item }}" not in installed_python_versions.stdout'
 
-- name: "Python | Aliasing"
+- name: "Python | Setting global version"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global {{ python_version }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global {{ python_version }} && {{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} version"
+  register: fubarhouse_python_switch
+  changed_when: fubarhouse_python_switch.stdout.find('{{ python_version }}') != -1
   when: "'{{ python_version }}' not in '{{ installed_python_versions.stdout }}'"

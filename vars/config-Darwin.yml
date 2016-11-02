@@ -6,7 +6,7 @@ fubarhouse_python:
   user_dir: "/Users/{{ fubarhouse_user }}"
   # Shell profiles
   shell_profiles:
-    - { filename: shell }
+    - { filename: .profile }
     - { filename: .bashrc }
     - { filename: .bash_profile }
   # Clean install
