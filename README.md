@@ -1,6 +1,6 @@
 # Ansible Role: Python
 
-[![Build Status](https://travis-ci.org/fubarhouse/fubarhouse.python.svg?branch=master)](https://travis-ci.org/fubarhouse/fubarhouse.python)
+[![Build Status](https://travis-ci.org/fubarhouse/ansible-role-python.svg?branch=master)](https://travis-ci.org/fubarhouse/ansible-role-python)
 
 * PyEnv on Darwin/Debian/RedHat servers.
 * Installs multiple python versions as required.

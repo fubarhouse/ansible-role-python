@@ -1,0 +1,47 @@
+---
+
+- name: VirtualEnv | Cloning/Updating
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  git:
+    repo: "{{ fubarhouse_python.repo_virtualenv }}"
+    dest: "{{ fubarhouse_python.main_dir }}/plugins/pyenv-virtualenv"
+    clone: yes
+    update: yes
+    force: yes
+    version: master
+    recursive: false
+
+- name: VirtualEnv | Ensure shell profiles are configured
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  lineinfile:
+    dest: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
+    regexp: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv-init -"
+    line: "eval \"$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv-init -)\""
+    state: present
+  with_items: "{{ fubarhouse_python.shell_profiles }}"
+  ignore_errors: yes
+
+- name: VirtualEnv | Get list of virtual environments
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs"
+  register: virtualenv_versions
+
+- name: VirtualEnv | Install virtual environment
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv {{ python_version }} Global-{{ python_version }}"
+  when: '"Global-{{ python_version }}" not in "{{ virtualenv_versions.stdout_lines }}"'
+
+- name: VirtualEnv | Set virtual environment to default
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global Global-{{ python_version }}"
+
+
+# pyenv deactivate
+# pyenv uninstall my-virtual-env
+# pyenv activate <name>
+# pyenv deactivate

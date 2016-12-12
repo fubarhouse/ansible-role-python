@@ -17,6 +17,7 @@ fubarhouse_python:
   install_pypi: true
   # Repositories
   repo_pyenv: "https://github.com/yyuu/pyenv.git"
+  repo_virtualenv: https://github.com/yyuu/pyenv-virtualenv.git
   repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
   # Install directories
   main_dir: "/home/{{ fubarhouse_user }}/.pyenv"
