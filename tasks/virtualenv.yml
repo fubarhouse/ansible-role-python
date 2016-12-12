@@ -12,8 +12,6 @@
     version: master
     recursive: false
 
--
-
 - name: VirtualEnv | Ensure shell profiles are configured
   become: yes
   become_user: "{{ fubarhouse_user }}"
@@ -41,6 +39,7 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global Global-{{ python_version }}"
+
 
 # pyenv deactivate
 # pyenv uninstall my-virtual-env
