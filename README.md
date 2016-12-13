@@ -35,6 +35,7 @@ python_packages:
 - Django
 ````
 List of all virtualenvs to install
+
 **Note**: If this is not specified, the variable `python_version` will be allocated to this array.
 ````
 virtualenvs:
@@ -42,6 +43,7 @@ virtualenvs:
   version: 2.7.11
 ````
 Virtualenvs to use as the global python system
+
 **Note**: If this is not specified, the variable `python_version` will be allocated to this variable.
 ````
 virtualenv: 2.7.11
