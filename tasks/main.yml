@@ -1,16 +1,6 @@
 ---
 # file: roles/fubarhouse.python/tasks/main.yml
 
-- name: "Define user variable for ssh use"
-  debug:
-    msg: "{{ ansible_ssh_user }}"
-  when: ansible_ssh_user is defined
-
-- name: "Define user variable for non-ssh use"
-  debug:
-    msg: "{{ ansible_user_id }}"
-  when: ansible_ssh_user is not defined
-
 - name: "Define OS-specific variables"
   include_vars: "config-{{ ansible_os_family }}.yml"
   when: fubarhouse_python is not defined
