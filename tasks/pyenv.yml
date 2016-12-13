@@ -33,6 +33,11 @@
   ignore_errors: yes
   no_log: yes
 
+- name: "PyEnv Debug!"
+  debug:
+    msg: "{{ fubarhouse_python_pyenv_installed }}"
+  failed_when: false
+
 - name: "PyEnv | Check directory permissions"
   become: yes
   become_user: "root"
@@ -42,7 +47,7 @@
     mode: 0755
     owner: "{{ fubarhouse_python.user }}"
     recurse: yes
-  when: not fubarhouse_python_pyenv_installed.stat.exists
+  when: fubarhouse_python_pyenv_installed.stat.exists == False
 
 - name: PyEnv | Cloning/Updating
   become: yes
