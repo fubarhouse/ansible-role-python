@@ -52,7 +52,7 @@
     owner: "{{ fubarhouse_python.user }}"
     recurse: yes
   failed_when: false
-#  when: fubarhouse_python_pyenv_installed.stat.exists == False
+  when: fubarhouse_python_pyenv_installed.stat.exists == False
 
 - name: PyEnv | Cloning/Updating
   become: yes
