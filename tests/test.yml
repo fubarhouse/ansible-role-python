@@ -3,7 +3,7 @@
 - hosts: all
   sudo: true
   vars:
-    ansible_ssh_user: root
+    ansible_ssh_user: travis
     python_version: 2.7.11
     python_versions:
     - 3.5.2
