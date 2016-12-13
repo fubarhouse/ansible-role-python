@@ -32,15 +32,15 @@
   register: fubarhouse_python_pyenv_installed
   failed_when: false
 
-- name: "PyEnv Debug!"
-  debug:
-    msg: "{{ fubarhouse_python_pyenv_installed }}"
-  failed_when: false
-
-- name: "PyEnv Debug 2!"
-  debug:
-    msg: "{{ fubarhouse_python.main_dir }}"
-  failed_when: false
+#- name: "PyEnv Debug!"
+#  debug:
+#    msg: "{{ fubarhouse_python_pyenv_installed }}"
+#  failed_when: false
+#
+#- name: "PyEnv Debug 2!"
+#  debug:
+#    msg: "{{ fubarhouse_python.main_dir }}"
+#  failed_when: false
 
 - name: "PyEnv | Check directory permissions"
   become: yes
@@ -51,7 +51,8 @@
     mode: 0755
     owner: "{{ fubarhouse_python.user }}"
     recurse: yes
-  when: fubarhouse_python_pyenv_installed.stat.exists == False
+  failed_when: false
+#  when: fubarhouse_python_pyenv_installed.stat.exists == False
 
 - name: PyEnv | Cloning/Updating
   become: yes
