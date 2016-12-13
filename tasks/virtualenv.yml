@@ -29,19 +29,49 @@
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs"
   register: virtualenv_versions
 
+- name: VirtualEnv | Get current version information
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs | grep '*'"
+  register: virtualenv_current_version
+  failed_when: false
+
+- name: VirtualEnv | Setup virtualenvs list
+  set_fact:
+    virtualenvs:
+    - name: "Global-{{ python_version }}"
+      version: "{{ python_version }}"
+  when: virtualenvs is undefined
+
+- name: VirtualEnv | Setup default virtualenv
+  set_fact:
+    virtualenv: "Global-{{ python_version }}"
+  when: virtualenv is undefined
+
+- name: VirtualEnv | Switching Python back to system
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global system"
+  when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
+
 - name: VirtualEnv | Install virtual environment
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv {{ python_version }} Global-{{ python_version }}"
-  when: '"Global-{{ python_version }}" not in "{{ virtualenv_versions.stdout_lines }}"'
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv {{ item.version }} {{ item.name }}"
+  with_items: "{{ virtualenvs }}"
+  when: '"{{ item.name }}" not in "{{ virtualenv_versions.stdout_lines }}"'
 
 - name: VirtualEnv | Set virtual environment to default
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global Global-{{ python_version }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global {{ virtualenv }}"
+  with_items: "{{ virtualenvs }}"
+  when: '"{{ item.name }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
 
-
-# pyenv deactivate
-# pyenv uninstall my-virtual-env
-# pyenv activate <name>
-# pyenv deactivate
+- name: VirtualEnv | Verify current version
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs | grep '*'"
+  register: virtualenv_current_version_after_role
+  failed_when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version_after_role.stdout_lines }}"'
+  when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
