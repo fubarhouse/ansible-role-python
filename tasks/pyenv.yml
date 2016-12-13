@@ -37,6 +37,11 @@
     msg: "{{ fubarhouse_python_pyenv_installed }}"
   failed_when: false
 
+- name: "PyEnv Debug 2!"
+  debug:
+    msg: "{{ fubarhouse_python.main_dir }}"
+  failed_when: false
+
 - name: "PyEnv | Check directory permissions"
   become: yes
   become_user: "root"
