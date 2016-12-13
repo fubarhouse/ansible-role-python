@@ -19,11 +19,3 @@
   shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} install {{ item }}"
   with_items: "{{ python_versions }}"
   when: '"{{ item }}" not in installed_python_versions.stdout'
-
-- name: "Python | Setting global version"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global {{ python_version }} && {{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} version"
-  register: fubarhouse_python_switch
-  changed_when: fubarhouse_python_switch.stdout.find('{{ python_version }}') != -1
-  when: "'{{ python_version }}' not in '{{ installed_python_versions.stdout }}'"
