@@ -30,7 +30,7 @@
   stat:
     path: "{{ fubarhouse_python.main_dir }}"
   register: fubarhouse_python_pyenv_installed
-  ignore_errors: yes
+  failed_when: false
 
 - name: "PyEnv Debug!"
   debug:
