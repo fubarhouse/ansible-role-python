@@ -10,7 +10,7 @@
   with_items:
    - "{{ fubarhouse_python.main_dir }}"
    - "{{ fubarhouse_python.pyenv_symlink_exec }}"
-  when: fubarhouse_python.clean_install
+  when: pyenv_clean_install
 
 - name: PyEnv | Ensure shell profiles are clean
   become: yes
@@ -22,7 +22,7 @@
     state: absent
   with_items: "{{ fubarhouse_python.shell_profiles }}"
   ignore_errors: yes
-  when: fubarhouse_python.clean_install
+  when: pyenv_clean_install
 
 - name: "PyEnv | Check for pyenv"
   become: yes

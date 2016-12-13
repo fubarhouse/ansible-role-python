@@ -3,6 +3,7 @@
 - hosts: all
   sudo: true
   vars:
+    pyenv_clean_install: True
     python_version: 2.7.11
     python_versions:
     - 3.5.2
