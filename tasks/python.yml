@@ -4,7 +4,7 @@
 - name: "Python | Run PyEnv / Debug task"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
+  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} commands"
 
 - name: "Python | Check python versions"
   become: yes
