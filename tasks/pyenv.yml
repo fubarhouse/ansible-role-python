@@ -72,7 +72,7 @@
 - name: PyEnv | Ensure updated
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: ""{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
+  shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
 
 - name: PyEnv | Create an executable
   become: yes
@@ -108,7 +108,7 @@
 
 - name: PyEnv | Remove Shim
   file:
-    path: ""{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"/shims/.pyenv-shim"
+    path: ""{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/shims/.pyenv-shim"
     state: absent
 
 - name: PyEnv | Rehash
