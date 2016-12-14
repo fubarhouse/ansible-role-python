@@ -10,12 +10,12 @@
 - name: "Python | Install default version"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: 'bash -c "{{ fubarhouse_python.pyenv_symlink_exec }} install {{ python_version }}"'
+  shell: "{{ fubarhouse_python.pyenv_symlink_exec }} install {{ python_version }}"
   when: '"{{ python_version }}" not in "{{ python_versions }}" and "{{ python_version }}" not in "{{ installed_python_versions.stdout }}"'
 
 - name: "Python | Install all requested versions"
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: 'bash -c "{{ fubarhouse_python.pyenv_symlink_exec }} install {{ item }}"'
+  shell: "{{ fubarhouse_python.pyenv_symlink_exec }} install {{ item }}"
   with_items: "{{ python_versions }}"
   when: '"{{ item }}" not in installed_python_versions.stdout'

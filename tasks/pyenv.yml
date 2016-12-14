@@ -1,6 +1,17 @@
 ---
 # file: roles/fubarhouse.python/tasks/pyenv.yml
 
+- name: PyEnv | Define shell configuration
+  set_fact:
+    fubarhouse_python_shell_exports:
+    - lineinfile: 'export PYENV_ROOT="{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"'
+      regex: 'export PYENV_ROOT="{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"'
+    - lineinfile: 'export PATH="$PYENV_ROOT/bin:$PATH"'
+      regex: '\$PYENV_ROOT/bin:\$PATH'
+    - lineinfile: 'eval "$(pyenv init -)"'
+      regex: 'pyenv init -'
+  when: fubarhouse_python_shell_exports is undefined
+
 - name: PyEnv | Clean-up
   become: yes
   become_user: "root"
@@ -16,12 +27,14 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
-    dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
-    regexp: "{{ fubarhouse_python.pyenv_symlink_exec }} init -"
-    line: "eval \"$({{ fubarhouse_python.pyenv_symlink_exec }} init -)\""
+    dest: "{{ fubarhouse_user_dir }}/{{ item[0].filename }}"
+    regexp: "{{ item[1].regex }}"
+    line: "{{ item[1].lineinfile }}"
     state: absent
-  with_items: "{{ fubarhouse_python.shell_profiles }}"
-  ignore_errors: yes
+  with_nested:
+  - "{{ fubarhouse_python.shell_profiles }}"
+  - "{{ fubarhouse_python_shell_exports }}"
+  failed_when: false
   when: pyenv_clean_install
 
 - name: PyEnv | Check for pyenv
@@ -56,22 +69,15 @@
     version: master
     recursive: false
 
-#- name: PyEnv | Create symlink
-#  become: yes
-#  become_user: root
-#  file:
-#    src: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
-#    dest: "{{ fubarhouse_python.pyenv_symlink_exec }}"
-#    owner: "{{ fubarhouse_user }}"
-#    mode: 0755
-#    state: link
-
-- name: PyEnv | Create executable
-  template:
-    src: "pyenv.j2"
+- name: PyEnv | Create symlink
+  become: yes
+  become_user: root
+  file:
+    src: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
     dest: "{{ fubarhouse_python.pyenv_symlink_exec }}"
     owner: "{{ fubarhouse_user }}"
     mode: 0755
+    state: link
 
 - name: PyEnv | Ensure shell profiles are available
   become: yes
@@ -86,11 +92,13 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
-    dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
-    regexp: "{{ fubarhouse_python.pyenv_symlink_exec }} init -"
-    line: "eval \"$({{ fubarhouse_python.pyenv_symlink_exec }} init -)\""
+    dest: "{{ fubarhouse_user_dir }}/{{ item[0].filename }}"
+    regexp: "{{ item[1].regex }}"
+    line: "{{ item[1].lineinfile }}"
     state: present
-  with_items: "{{ fubarhouse_python.shell_profiles }}"
+  with_nested:
+  - "{{ fubarhouse_python.shell_profiles }}"
+  - "{{ fubarhouse_python_shell_exports }}"
   ignore_errors: yes
 
 - name: PyEnv | Remove Shim
