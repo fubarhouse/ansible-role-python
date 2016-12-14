@@ -13,7 +13,8 @@
 - include: python.yml
   when: fubarhouse_python.install_python
 
-- include: virtualenv.yml
+- include: plugin-updater.yml
+- include: plugin-virtualenv.yml
 
 - include: pypi.yml
   when: fubarhouse_python.install_pypi

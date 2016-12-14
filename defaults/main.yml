@@ -1,5 +1,6 @@
 ---
 
+pyenv_clean_install: False
 python_version: 2.7.11
 python_versions:
   - 2.7.11

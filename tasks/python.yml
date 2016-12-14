@@ -1,23 +1,6 @@
 ---
 # file: roles/fubarhouse.python/tasks/python.yml
 
-- name: "Python | Run PyEnv / Debug task"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} commands"
-
-- name: "Python | Run PyEnv / Debug task"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "ls -lah {{ fubarhouse_user_dir }}/"
-
-- name: "Python | Run PyEnv / Debug task"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "cat {{ fubarhouse_user_dir }}/{{ item }}"
-  with_items: "{{ fubarhouse_python.shell_profiles }}"
-  failed_when: false
-
 - name: "Python | Check python versions"
   become: yes
   become_user: "{{ fubarhouse_user }}"
