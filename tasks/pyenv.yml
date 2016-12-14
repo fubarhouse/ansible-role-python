@@ -86,7 +86,7 @@
 
 - name: PyEnv | Ensure shell profiles are available
   become: yes
-  become_user: "{{ fubarhouse_user }}"
+  become_user: "root"
   file:
     path: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
     state: touch
