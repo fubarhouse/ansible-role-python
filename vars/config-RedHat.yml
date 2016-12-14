@@ -3,9 +3,9 @@
 fubarhouse_python:
   # Shell profiles
   shell_profiles:
-    - { filename: .profile }
-    - { filename: .bashrc }
-    - { filename: .bash_profile }
+  - filename: .profile
+  - filename: .bashrc
+  - filename: .bash_profile
   # Application versions
   # Clean install
   clean_install: false

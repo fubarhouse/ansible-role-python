@@ -11,19 +11,8 @@
     force: yes
     version: master
     recursive: false
-  # when: not pyenv_installed.stat.exists
 
 - name: PyEnv | Ensure updated
   become: yes
   become_user: "{{ fubarhouse_user }}"
   shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
-
-- name: PyEnv | Create an executable
-  become: yes
-  become_user: "root"
-  file:
-    src: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
-    dest: "{{ fubarhouse_python.pyenv_symlink_exec }}"
-    owner: "{{ fubarhouse_user }}"
-    mode: 0755
-    state: link
