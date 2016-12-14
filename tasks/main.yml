@@ -3,7 +3,7 @@
 
 - name: debug
   debug:
-    msg: "{{ fubarhous_user }}"
+    msg: "{{ fubarhouse_user }}"
 
 - name: debug
   debug:
