@@ -4,7 +4,7 @@
   sudo: true
   vars:
     fubarhouse_user: root
-    fubarhouse_user_dir: /root/home
+    fubarhouse_user_dir: /root
     pyenv_clean_install: True
     python_version: 2.7.11
     python_versions:
