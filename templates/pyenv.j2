@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-PYENV="{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}";
+PYENV="{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/libexec/{{ fubarhouse_python.main_exec }}";
 
-eval $($PYENV init -);
+if [[ -n $(cat ~/.profile | grep "pyenv init -") ]]; then
+  echo;
+else
+  echo 'eval "$(${PYENV} init -)"' >> ~/.bash_profile
+fi
+
 $PYENV $@;
 
