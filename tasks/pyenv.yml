@@ -90,8 +90,10 @@
   file:
     path: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
     state: touch
+  args:
+    creates: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
   with_items: "{{ fubarhouse_python.shell_profiles }}"
-  ignore_errors: yes
+  failed_when: false
 
 - name: PyEnv | Ensure shell profiles are configured
   become: yes
