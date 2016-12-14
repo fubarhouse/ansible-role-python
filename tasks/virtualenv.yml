@@ -17,7 +17,7 @@
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
     dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
-    regexp: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv-init -"
+    regexp: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv-init -"
     line: "eval \"$({{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv-init -)\""
     state: present
   with_items: "{{ fubarhouse_python.shell_profiles }}"
