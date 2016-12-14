@@ -9,6 +9,14 @@
   debug:
     msg: "{{ fubarhouse_user_dir }}"
 
+- name: shell debug gather
+  shell: "ls -lah {{ fubarhouse_user_dir }}"
+  register: shell_debug_gather
+
+- name: debug
+  debug:
+    msg: "{{ shell_debug_gather }}"
+
 - name: "Define OS-specific variables"
   include_vars: "config-{{ ansible_os_family }}.yml"
   when: fubarhouse_python is not defined

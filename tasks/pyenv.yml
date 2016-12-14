@@ -17,8 +17,8 @@
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
     dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
-    regexp: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -"
-    line: "eval \"$({{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)\""
+    regexp: "{{ fubarhouse_python.pyenv_symlink_exec }} init -"
+    line: "eval \"$({{ fubarhouse_python.pyenv_symlink_exec }} init -)\""
     state: absent
   with_items: "{{ fubarhouse_python.shell_profiles }}"
   ignore_errors: yes
