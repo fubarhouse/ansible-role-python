@@ -5,7 +5,7 @@
   become_user: "{{ fubarhouse_user }}"
   git:
     repo: "{{ fubarhouse_python.repo_virtualenv }}"
-    dest: "{{ fubarhouse_python.main_dir }}/plugins/pyenv-virtualenv"
+    dest: ""{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/plugins/pyenv-virtualenv"
     clone: yes
     update: yes
     force: yes
@@ -17,8 +17,8 @@
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
     dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
-    regexp: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv-init -"
-    line: "eval \"$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv-init -)\""
+    regexp: ""{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv-init -"
+    line: "eval \"$({{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv-init -)\""
     state: present
   with_items: "{{ fubarhouse_python.shell_profiles }}"
   ignore_errors: yes
@@ -26,13 +26,13 @@
 - name: VirtualEnv | Get list of virtual environments
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs"
+  shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs"
   register: virtualenv_versions
 
 - name: VirtualEnv | Get current version information
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs | grep '*'"
+  shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs | grep '*'"
   register: virtualenv_current_version
   failed_when: false
 
@@ -51,27 +51,27 @@
 - name: VirtualEnv | Switching Python back to system
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global system"
+  shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global system"
   when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
 
 - name: VirtualEnv | Install virtual environment
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv {{ item.version }} {{ item.name }}"
+  shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenv {{ item.version }} {{ item.name }}"
   with_items: "{{ virtualenvs }}"
   when: '"{{ item.name }}" not in "{{ virtualenv_versions.stdout_lines }}"'
 
 - name: VirtualEnv | Set virtual environment to default
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global {{ virtualenv }}"
+  shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} global {{ virtualenv }}"
   with_items: "{{ virtualenvs }}"
   when: '"{{ item.name }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
 
 - name: VirtualEnv | Verify current version
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs | grep '*'"
+  shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} virtualenvs | grep '*'"
   register: virtualenv_current_version_after_role
   failed_when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version_after_role.stdout_lines }}"'
   when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'

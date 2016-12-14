@@ -8,7 +8,7 @@
     path: "{{ item }}"
     state: absent
   with_items:
-   - "{{ fubarhouse_python.main_dir }}"
+   - "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
    - "{{ fubarhouse_python.pyenv_symlink_exec }}"
   when: pyenv_clean_install
 
@@ -17,8 +17,8 @@
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
     dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
-    regexp: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -"
-    line: "eval \"$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)\""
+    regexp: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -"
+    line: "eval \"$({{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)\""
     state: absent
   with_items: "{{ fubarhouse_python.shell_profiles }}"
   ignore_errors: yes
@@ -28,7 +28,7 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   stat:
-    path: "{{ fubarhouse_python.main_dir }}"
+    path: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
   register: fubarhouse_python_pyenv_installed
   failed_when: false
 
@@ -36,7 +36,7 @@
   become: yes
   become_user: "root"
   file:
-    path: "{{ fubarhouse_python.main_dir }}"
+    path: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
     state: directory
     mode: 0755
     owner: "{{ fubarhouse_python.user }}"
@@ -49,7 +49,7 @@
   become_user: "{{ fubarhouse_user }}"
   git:
     repo: "{{ fubarhouse_python.repo_pyenv }}"
-    dest: "{{ fubarhouse_python.main_dir }}"
+    dest: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
     clone: yes
     update: yes
     force: yes
@@ -61,7 +61,7 @@
   become_user: "{{ fubarhouse_user }}"
   git:
     repo: "{{ fubarhouse_python.repo_pyenv_updater }}"
-    dest: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}"
+    dest: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}"
     clone: yes
     update: yes
     force: yes
@@ -72,13 +72,13 @@
 - name: PyEnv | Ensure updated
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
+  shell: ""{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
 
 - name: PyEnv | Create an executable
   become: yes
   become_user: "root"
   file:
-    src: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
+    src: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
     dest: "{{ fubarhouse_python.pyenv_symlink_exec }}"
     owner: "{{ fubarhouse_python.user }}"
     mode: 0755
@@ -100,15 +100,15 @@
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
     dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
-    regexp: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -"
-    line: "eval \"$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)\""
+    regexp: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -"
+    line: "eval \"$({{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)\""
     state: present
   with_items: "{{ fubarhouse_python.shell_profiles }}"
   ignore_errors: yes
 
 - name: PyEnv | Remove Shim
   file:
-    path: "{{ fubarhouse_python.main_dir }}/shims/.pyenv-shim"
+    path: ""{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"/shims/.pyenv-shim"
     state: absent
 
 - name: PyEnv | Rehash
