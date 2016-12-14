@@ -1,7 +1,7 @@
 ---
 # file: roles/fubarhouse.python/tasks/pyenv.yml
 
-- name: "PyEnv | Clean-up"
+- name: PyEnv | Clean-up
   become: yes
   become_user: "root"
   file:
@@ -90,8 +90,6 @@
   file:
     path: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
     state: touch
-  args:
-    creates: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
   with_items: "{{ fubarhouse_python.shell_profiles }}"
   failed_when: false
 

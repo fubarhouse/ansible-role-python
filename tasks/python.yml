@@ -9,6 +9,11 @@
 - name: "Python | Run PyEnv / Debug task"
   become: yes
   become_user: "{{ fubarhouse_user }}"
+  shell: "ls {{ fubarhouse_user_dir }}/"
+
+- name: "Python | Run PyEnv / Debug task"
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
   shell: "cat {{ fubarhouse_user_dir }}/{{ item }}"
   with_items: "{{ fubarhouse_python.shell_profiles }}"
 
