@@ -3,7 +3,6 @@
 fubarhouse_python:
   # User
   user: "{{ fubarhouse_user }}"
-  user_dir: "/home/{{ fubarhouse_user }}"
   # Shell profiles
   shell_profiles:
     - { filename: .profile }

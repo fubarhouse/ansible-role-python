@@ -16,7 +16,7 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
-    dest: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
+    dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
     regexp: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -"
     line: "eval \"$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)\""
     state: absent
@@ -86,12 +86,12 @@
 
 - name: PyEnv | Ensure shell profiles are available
   become: yes
-  become_user: "root"
+  become_user: "{{ fubarhouse_user }}"
   file:
-    path: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
+    path: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
     state: touch
   args:
-    creates: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
+    creates: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
   with_items: "{{ fubarhouse_python.shell_profiles }}"
   failed_when: false
 
@@ -99,7 +99,7 @@
   become: yes
   become_user: "{{ fubarhouse_user }}"
   lineinfile:
-    dest: "{{ fubarhouse_python.user_dir }}/{{ item.filename }}"
+    dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
     regexp: "{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -"
     line: "eval \"$({{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -)\""
     state: present
