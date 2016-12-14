@@ -16,6 +16,7 @@
   become_user: "{{ fubarhouse_user }}"
   shell: "cat {{ fubarhouse_user_dir }}/{{ item }}"
   with_items: "{{ fubarhouse_python.shell_profiles }}"
+  failed_when: false
 
 - name: "Python | Check python versions"
   become: yes
