@@ -24,7 +24,7 @@
   ignore_errors: yes
   when: pyenv_clean_install
 
-- name: "PyEnv | Check for pyenv"
+- name: PyEnv | Check for pyenv
   become: yes
   become_user: "{{ fubarhouse_user }}"
   stat:
@@ -32,17 +32,17 @@
   register: fubarhouse_python_pyenv_installed
   failed_when: false
 
-- name: "PyEnv | Check directory permissions"
+- name: PyEnv | Check directory permissions
   become: yes
   become_user: "root"
   file:
     path: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
     state: directory
     mode: 0755
-    owner: "{{ fubarhouse_python.user }}"
+    owner: "{{ fubarhouse_user }}"
     recurse: yes
   failed_when: false
-  when: fubarhouse_python_pyenv_installed.stat.exists == False
+  when: not fubarhouse_python_pyenv_installed.stat.exists
 
 - name: PyEnv | Cloning/Updating
   become: yes
@@ -80,7 +80,7 @@
   file:
     src: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
     dest: "{{ fubarhouse_python.pyenv_symlink_exec }}"
-    owner: "{{ fubarhouse_python.user }}"
+    owner: "{{ fubarhouse_user }}"
     mode: 0755
     state: link
 

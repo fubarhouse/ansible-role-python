@@ -1,8 +1,6 @@
 ---
 
 fubarhouse_python:
-  # User
-  user: "{{ fubarhouse_user }}"
   # Shell profiles
   shell_profiles:
     - { filename: .profile }
