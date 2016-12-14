@@ -1,5 +1,6 @@
 ---
-dependencies: []
+dependencies:
+- fubarhouse.commons
 
 galaxy_info:
   author: fubarhouse

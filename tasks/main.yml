@@ -1,14 +1,6 @@
 ---
 # file: roles/fubarhouse.python/tasks/main.yml
 
-- name: "get home"
-  shell: "echo $HOME"
-  register: shell_home_dir
-
-- name: "set home"
-  set_fact:
-    fubarhouse_user_dir: "{{ shell_home_dir.stdout }}"
-
 - name: "Define OS-specific variables"
   include_vars: "config-{{ ansible_os_family }}.yml"
   when: fubarhouse_python is not defined

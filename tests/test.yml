@@ -3,7 +3,6 @@
 - hosts: all
   sudo: true
   vars:
-    fubarhouse_user: travis
     pyenv_clean_install: True
     python_version: 2.7.11
     python_versions:
@@ -15,11 +14,6 @@
     virtualenvs:
     - name: Global-2.7.11
       version: 2.7.11
-  pre_tasks:
-  - name: add travis user
-    user:
-      name: travis
-      state: present
   roles:
   - geerlingguy.git
   - fubarhouse.curl
