@@ -16,7 +16,6 @@
     - libreadline-dev
     - libsqlite3-dev
     - sudo
-    - which
     - wget
     - curl
     - llvm
