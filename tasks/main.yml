@@ -1,6 +1,14 @@
 ---
 # file: roles/fubarhouse.python/tasks/main.yml
 
+- name: debug
+  debug:
+    msg: "{{ fubarhous_user }}"
+
+- name: debug
+  debug:
+    msg: "{{ fubarhouse_user_dir }}"
+
 - name: "Define OS-specific variables"
   include_vars: "config-{{ ansible_os_family }}.yml"
   when: fubarhouse_python is not defined
