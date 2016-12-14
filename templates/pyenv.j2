@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+eval $({{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} init -);
+
+{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }} $@;

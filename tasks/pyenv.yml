@@ -56,15 +56,22 @@
     version: master
     recursive: false
 
-- name: PyEnv | Linking
-  become: yes
-  become_user: root
-  file:
-    src: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
+#- name: PyEnv | Create symlink
+#  become: yes
+#  become_user: root
+#  file:
+#    src: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
+#    dest: "{{ fubarhouse_python.pyenv_symlink_exec }}"
+#    owner: "{{ fubarhouse_user }}"
+#    mode: 0755
+#    state: link
+
+- name: PyEnv | Create executable
+  template:
+    src: "pyenv.j2"
     dest: "{{ fubarhouse_python.pyenv_symlink_exec }}"
     owner: "{{ fubarhouse_user }}"
     mode: 0755
-    state: link
 
 - name: PyEnv | Ensure shell profiles are available
   become: yes
