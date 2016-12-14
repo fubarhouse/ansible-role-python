@@ -108,7 +108,7 @@
 
 - name: PyEnv | Remove Shim
   file:
-    path: ""{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/shims/.pyenv-shim"
+    path: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/shims/.pyenv-shim"
     state: absent
 
 - name: PyEnv | Rehash
