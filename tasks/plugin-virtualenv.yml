@@ -79,7 +79,6 @@
 - name: VirtualEnv | Restart shell
   become: yes
   become_user: "{{ fubarhouse_user }}"
-  shell: "source {{ fubarhouse_user_dir }}/{{ item.filename }}"
+  shell: ". {{ fubarhouse_user_dir }}/{{ item.filename }}"
   with_items: "{{ fubarhouse_python.shell_profiles }}"
-
   when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
