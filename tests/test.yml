@@ -6,16 +6,15 @@
     fubarhouse_user: travis
     fubarhouse_user_dir: /home/travis
     pyenv_clean_install: True
-    python_version: 2.7.11
+    python_version: 3.5.2
     python_versions:
     - 3.5.2
-    - 2.7.11
     python_packages:
     - virtualenv
-    virtualenv: Global-2.7.11
+    virtualenv: Global-3.5.2
     virtualenvs:
-    - name: Global-2.7.11
-      version: 2.7.11
+    - name: Global-3.5.2
+      version: 3.5.2
   pre_tasks:
   - name: add travis
     user:

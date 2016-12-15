@@ -75,3 +75,9 @@
   register: virtualenv_current_version_after_role
   failed_when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version_after_role.stdout_lines }}"'
   when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
+
+- name: VirtualEnv | Restart shell
+  become: yes
+  become_user: "{{ fubarhouse_user }}"
+  shell: |source $HOME/.profile $HOME/.bash_profile"
+  when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
