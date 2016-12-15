@@ -1,14 +1,11 @@
 ---
 
 fubarhouse_python:
-  # User
-  user: "{{ fubarhouse_user }}"
-  user_dir: "/home/{{ fubarhouse_user }}"
   # Shell profiles
   shell_profiles:
-    - { filename: .profile }
-    - { filename: .bashrc }
-    - { filename: .bash_profile }
+  - filename: .profile
+  - filename: .bashrc
+  - filename: .bash_profile
   # Clean install
   clean_install: false
   # Process controls
@@ -20,7 +17,7 @@ fubarhouse_python:
   repo_virtualenv: https://github.com/yyuu/pyenv-virtualenv.git
   repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
   # Install directories
-  main_dir: "/home/{{ fubarhouse_user }}/.pyenv"
+  main_dir: ".pyenv"
   # Install paths
   main_path: "bin"
   updater_path: "plugins/pyenv-update"

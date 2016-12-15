@@ -1,0 +1,28 @@
+---
+
+- hosts: all
+  sudo: true
+  vars:
+    fubarhouse_user: travis
+    fubarhouse_user_dir: /home/travis
+    curl_version: "7.47.0"
+    pyenv_clean_install: True
+    python_version: 3.5.2
+    python_versions:
+    - 3.5.2
+    python_packages:
+    - virtualenv
+    virtualenv: Global-3.5.2
+    virtualenvs:
+    - name: Global-3.5.2
+      version: 3.5.2
+  pre_tasks:
+  - name: add travis
+    user:
+      name: travis
+      state: present
+  roles:
+  - geerlingguy.git
+  - fubarhouse.curl
+  - fubarhouse.commons
+  - role_under_test

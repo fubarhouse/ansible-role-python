@@ -6,11 +6,11 @@
     name: pip
     state: present
 
-- name: "PyPI | Ensure absent"
-  pip:
-    name: "{{ item }}"
-    state: absent
-  with_items: "{{ python_packages }}"
+#- name: "PyPI | Ensure absent"
+#  pip:
+#    name: "{{ item }}"
+#    state: absent
+#  with_items: "{{ python_packages }}"
 
 - name: "PyPI | Ensure installed and updated"
   pip:

@@ -1,19 +1,21 @@
 ---
 # file: roles/fubarhouse.python/tasks/main.yml
 
-- name: "Define user variable for ssh use"
-  set_fact:
-    fubarhouse_user: "{{ ansible_ssh_user }}"
-  when: ansible_ssh_user is defined and fubarhouse_user is undefined
-
-- name: "Define user variable for non-ssh use"
-  set_fact:
-    fubarhouse_user: "{{ ansible_user_id }}"
-  when: ansible_ssh_user is not defined and fubarhouse_user is undefined
-
 - name: "Define OS-specific variables"
   include_vars: "config-{{ ansible_os_family }}.yml"
   when: fubarhouse_python is not defined
+
+- name: debug
+  debug:
+    msg: "{{ fubarhouse_user_dir }}"
+
+- name: debug
+  debug:
+    msg: "{{ fubarhouse_python.main_dir }}"
+
+- name: debug
+  debug:
+    msg: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
 
 - include: "dependencies-{{ ansible_os_family}}.yml"
 
@@ -23,7 +25,8 @@
 - include: python.yml
   when: fubarhouse_python.install_python
 
-- include: virtualenv.yml
+- include: plugin-updater.yml
+- include: plugin-virtualenv.yml
 
 - include: pypi.yml
   when: fubarhouse_python.install_pypi
