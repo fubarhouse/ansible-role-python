@@ -10,6 +10,7 @@
     - git
     - make
     - build-essential
+    - ca-certificates
     - libssl-dev
     - zlib1g-dev
     - libbz2-dev
