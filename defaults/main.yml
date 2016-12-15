@@ -3,14 +3,14 @@
 pyenv_clean_install: False
 python_version: 2.7.11
 python_versions:
-  - 2.7.11
-  - 3.5.1
+- 2.7.11
+- 3.5.1
 
 pypi_path: "versions/{{ python_version }}/bin"
 
 python_packages:
-  - pyyaml
-  - jinja2
-  - virtualenv
-  - pyasn1
-  - Django
+- pyyaml
+- jinja2
+- virtualenv
+- pyasn1
+- Django
