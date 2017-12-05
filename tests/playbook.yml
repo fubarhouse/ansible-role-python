@@ -1,8 +1,8 @@
 ---
 
-- hosts: localhost
+- hosts: all
   vars:
     python_version: 2.7.11
     python_versions: []
   roles:
-  - ../../ansible-role-python/
+  - role_under_test
