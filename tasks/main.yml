@@ -1,32 +1,30 @@
 ---
 # file: roles/fubarhouse.python/tasks/main.yml
 
-- name: "Define OS-specific variables"
-  include_vars: "config-{{ ansible_os_family }}.yml"
-  when: fubarhouse_python is not defined
+- name: "Include setup tasks"
+  include: setup.yml
 
-- name: debug
-  debug:
-    msg: "{{ fubarhouse_user_dir }}"
+- name: "Include cleanup tasks"
+  include: cleanup.yml
+  when: pyenv_clean_install|bool == true
 
-- name: debug
-  debug:
-    msg: "{{ fubarhouse_python.main_dir }}"
+- name: "Include OS-specific tasks"
+  include: "dependencies-{{ ansible_os_family}}.yml"
 
-- name: debug
-  debug:
-    msg: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
+- name: "Include tasks for PyEnv installation"
+  include: pyenv.yml
+  when: install_pyenv|bool == true
 
-- include: "dependencies-{{ ansible_os_family}}.yml"
+- name: "Include tasks for Python installation"
+  include: python.yml
+  when: install_python|bool == true
 
-- include: pyenv.yml
-  when: fubarhouse_python.install_pyenv
+#- name: "Include tasks for PyEnv updater"
+#  include: plugin-updater.yml
 
-- include: python.yml
-  when: fubarhouse_python.install_python
+#- name: "Include Virtualenv tasks"
+#  include: plugin-virtualenv.yml
 
-- include: plugin-updater.yml
-- include: plugin-virtualenv.yml
-
-- include: pypi.yml
-  when: fubarhouse_python.install_pypi
+- name: "Include Pypi tasks"
+  include: pypi.yml
+  when: install_pypi|bool == true

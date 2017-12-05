@@ -1,6 +1,14 @@
 ---
 
-pyenv_clean_install: False
+# Clean install
+python_clean_install: false
+
+# Process controls
+install_pyenv: true
+install_python: true
+install_pypi: true
+
+pyenv_clean_install: false
 python_version: 2.7.11
 python_versions:
 - 2.7.11
@@ -12,5 +20,21 @@ python_packages:
 - pyyaml
 - jinja2
 - virtualenv
-- pyasn1
-- Django
+
+# Repositories
+repo_pyenv: "https://github.com/yyuu/pyenv.git"
+repo_virtualenv: https://github.com/yyuu/pyenv-virtualenv.git
+repo_pyenv_updater: https://github.com/yyuu/pyenv-update.git
+
+# Paths
+pyenv_main_dir: ".pyenv"
+pyenv_bin_path: "bin"
+pyenv_updater_path: "plugins/pyenv-update"
+pyenv_path: "usr/bin"
+pyenv_main_exec: "pyenv"
+pyenv_updater_exec: "bin/pyenv-update"
+python_exec: "/usr/bin/python"
+pypi_exec: "pip"
+
+# Symlinks
+pyenv_symlink_exec: "/usr/local/bin/pyenv"

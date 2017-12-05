@@ -1,110 +1,51 @@
 ---
 # file: roles/fubarhouse.python/tasks/pyenv.yml
 
-- name: PyEnv | Define shell configuration
-  set_fact:
-    fubarhouse_python_shell_exports:
-    - lineinfile: 'export PYENV_ROOT="{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"'
-      regex: 'export PYENV_ROOT="{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"'
-    - lineinfile: 'export PATH="$PYENV_ROOT/bin:$PATH"'
-      regex: '\$PYENV_ROOT/bin:\$PATH'
-    - lineinfile: 'eval "$(pyenv init -)"'
-      regex: 'pyenv init -'
-  when: fubarhouse_python_shell_exports is undefined
-
-- name: PyEnv | Clean-up
-  become: yes
-  become_user: "root"
+- name: "PyEnv | Check directory permissions"
   file:
-    path: "{{ item }}"
-    state: absent
-  with_items:
-   - "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
-   - "{{ fubarhouse_python.pyenv_symlink_exec }}"
-  when: pyenv_clean_install
-
-- name: PyEnv | Ensure shell profiles are clean
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  lineinfile:
-    dest: "{{ fubarhouse_user_dir }}/{{ item[0].filename }}"
-    regexp: "{{ item[1].regex }}"
-    line: "{{ item[1].lineinfile }}"
-    state: absent
-  with_nested:
-  - "{{ fubarhouse_python.shell_profiles }}"
-  - "{{ fubarhouse_python_shell_exports }}"
-  failed_when: false
-  when: pyenv_clean_install
-
-- name: PyEnv | Check for pyenv
-  become: yes
-  become_user: root
-  stat:
-    path: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
-  register: fubarhouse_python_pyenv_installed
-  failed_when: false
-
-- name: PyEnv | Check directory permissions
-  become: yes
-  become_user: "root"
-  file:
-    path: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
+    path: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}"
     state: directory
     mode: 0755
     owner: "{{ fubarhouse_user }}"
     recurse: yes
   failed_when: false
-  when: not fubarhouse_python_pyenv_installed.stat.exists
+  changed_when: false
 
-- name: PyEnv | Cloning/Updating
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
+- name: "PyEnv | Cloning/Updating"
   git:
-    repo: "{{ fubarhouse_python.repo_pyenv }}"
-    dest: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
+    repo: "{{ repo_pyenv }}"
+    dest: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}"
     clone: yes
-    update: yes
-    force: yes
-    version: master
+    update: no
+    force: no
     recursive: false
 
-- name: PyEnv | Create symlink
-  become: yes
-  become_user: root
+- name: "PyEnv | Create symlink"
   file:
-    src: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.main_path }}/{{ fubarhouse_python.main_exec }}"
-    dest: "{{ fubarhouse_python.pyenv_symlink_exec }}"
+    src: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }}"
+    dest: "{{ pyenv_symlink_exec }}"
     owner: "{{ fubarhouse_user }}"
     mode: 0755
     state: link
 
-- name: PyEnv | Ensure shell profiles are available
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
+- name: "PyEnv | Ensure shell profiles are available"
   file:
     path: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
     state: touch
-  with_items: "{{ fubarhouse_python.shell_profiles }}"
+  with_items: "{{ shell_profiles }}"
   failed_when: false
+  when: shell_profiles is defined
 
-- name: PyEnv | Ensure shell profiles are configured
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
+- name: "PyEnv | Ensure shell profiles are configured"
   lineinfile:
     dest: "{{ fubarhouse_user_dir }}/{{ item[0].filename }}"
     regexp: "{{ item[1].regex }}"
     line: "{{ item[1].lineinfile }}"
     state: present
   with_nested:
-  - "{{ fubarhouse_python.shell_profiles }}"
+  - "{{ shell_profiles }}"
   - "{{ fubarhouse_python_shell_exports }}"
   ignore_errors: yes
-
-- name: PyEnv | Remove Shim
-  file:
-    path: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/shims/.pyenv-shim"
-    state: absent
-
-- name: PyEnv | Rehash
-  shell: "{{ fubarhouse_python.pyenv_symlink_exec }} rehash"
+  when:
+    - shell_profiles is defined
+    - fubarhouse_python_shell_exports is defined

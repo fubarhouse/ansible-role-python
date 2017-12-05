@@ -1,0 +1,33 @@
+---
+
+- name: "PyEnv | Define user variable for ssh use"
+  set_fact:
+    fubarhouse_user: "{{ ansible_ssh_user }}"
+  when: ansible_ssh_user is defined and fubarhouse_user is not defined
+
+- name: "PyEnv | Define user variable for non-ssh use"
+  set_fact:
+    fubarhouse_user: "{{ ansible_user_id }}"
+  when: ansible_ssh_user is not defined and fubarhouse_user is not defined
+
+- name: "PyEnv | Get $HOME"
+  shell: "echo $HOME"
+  register: shell_home_dir
+  changed_when: false
+  when: fubarhouse_user_dir is not defined
+
+- name: "PyEnv | Set $HOME"
+  set_fact:
+    fubarhouse_user_dir: "{{ shell_home_dir.stdout }}"
+  when: fubarhouse_user_dir is not defined
+
+- name: "PyEnv | Define shell exports"
+  set_fact:
+    fubarhouse_python_shell_exports:
+    - lineinfile: 'export PYENV_ROOT="{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}"'
+      regex: 'export PYENV_ROOT="{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}"'
+    - lineinfile: 'export PATH="$PYENV_ROOT/bin:$PATH"'
+      regex: '\$PYENV_ROOT/bin:\$PATH'
+    - lineinfile: 'eval "$(pyenv init -)"'
+      regex: 'pyenv init -'
+  when: fubarhouse_python_shell_exports is undefined
