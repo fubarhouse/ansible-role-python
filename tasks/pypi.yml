@@ -11,5 +11,4 @@
   pip:
     name: "{{ item }}"
     state: latest
-    executable: /usr/local/bin/pip2
   with_items: "{{ python_packages }}"
