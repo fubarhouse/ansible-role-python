@@ -4,5 +4,21 @@
   vars:
     python_version: 2.7.11
     python_versions: []
+  pre_tasks:
+    - name: Update yum cache.
+      yum:
+        update_cache: yes
+        state: latest
+      changed_when: false
+      when: ansible_os_family == 'RedHat'
+      failed_when: false
+
+    - name: Update apt cache.
+      apt:
+        update_cache: yes
+        cache_valid_time: 600
+      changed_when: false
+      when: ansible_os_family == 'Debian'
+      failed_when: false
   roles:
   - role_under_test
