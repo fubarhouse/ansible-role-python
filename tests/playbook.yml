@@ -47,7 +47,7 @@
       when: ansible_os_family == 'Debian'
 
     - name: Upgrade pip
-      shell: pip install --upgrade pip
+      shell: pip install --upgrade pip==1.2.1
       failed_when: false
       changed_when: false
       when: ansible_os_family == 'Debian'

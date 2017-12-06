@@ -5,7 +5,6 @@
     name: "{{ item }}"
     state: installed
   with_items:
-    - git
     - make
     - build-essential
     - ca-certificates
