@@ -15,6 +15,7 @@
     - libreadline-dev
     - libsqlite3-dev
     - openssl
+    - python-openssl
     - sudo
     - wget
     - curl

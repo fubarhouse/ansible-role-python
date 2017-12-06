@@ -17,5 +17,6 @@
     - sqlite-devel
     - sudo
     - which
-    - openssl-devel
+    - openssl
+    - python-openssl
     - python-pip
