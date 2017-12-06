@@ -10,15 +10,47 @@
         update_cache: yes
         state: latest
       changed_when: false
-      when: ansible_os_family == 'RedHat'
       failed_when: false
+      when: ansible_os_family == 'RedHat'
 
     - name: Update apt cache.
       apt:
         update_cache: yes
         cache_valid_time: 600
       changed_when: false
-      when: ansible_os_family == 'Debian'
       failed_when: false
+      when: ansible_os_family == 'Debian'
+
+    - name: Install dependencies (RedHat)
+      dnf:
+        name: "{{ item }}"
+        state: installed
+      with_items:
+        - openssl
+        - compat-openssl10-devel
+      failed_when: false
+      changed_when: false
+      when:
+        - ansible_os_family == "RedHat"
+        - ansible_distribution != "CentOS"
+
+    - name: Install dependencies (Debian)
+      apt:
+        name: "{{ item }}"
+        state: installed
+      with_items:
+        - git
+        - git-core
+        - python-pip
+      failed_when: false
+      changed_when: false
+      when: ansible_os_family == 'Debian'
+
+    - name: Upgrade pip
+      shell: pip install --upgrade pip
+      failed_when: false
+      changed_when: false
+      when: ansible_os_family == 'Debian'
+
   roles:
   - role_under_test
