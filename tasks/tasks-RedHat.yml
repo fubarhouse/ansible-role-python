@@ -17,5 +17,5 @@
     - sqlite-devel
     - sudo
     - which
-    - openssl
+    - compat-openssl10-devel
     - python-pip
