@@ -1,0 +1,21 @@
+---
+
+- name: "Installing dependencies"
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - git
+    - gcc
+    - git
+    - patch
+    - zlib-devel
+    - bzip2
+    - bzip2-devel
+    - readline-devel
+    - sqlite
+    - sqlite-devel
+    - sudo
+    - which
+    - openssl-devel
+    - python-pip
