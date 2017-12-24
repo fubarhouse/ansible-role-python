@@ -18,7 +18,6 @@ pypi_path: "versions/{{ python_version }}/bin"
 
 python_packages:
 - pyyaml
-- jinja2
 - virtualenv
 
 # Repositories
