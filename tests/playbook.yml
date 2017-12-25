@@ -26,8 +26,7 @@
         name: "{{ item }}"
         state: installed
       with_items:
-        - openssl
-        - python-openssl
+        - openssl-devel
       failed_when: false
       changed_when: false
       when:
