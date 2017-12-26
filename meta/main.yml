@@ -31,7 +31,6 @@ galaxy_info:
       - trusty
       - saucy
       - raring
-      - quantal
   categories:
   - system
   - development
