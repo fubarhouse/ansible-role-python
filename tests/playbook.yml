@@ -27,6 +27,7 @@
         state: installed
       with_items:
         - compat-openssl10-devel
+        - zlib-devel
       failed_when: false
       changed_when: false
       when:
