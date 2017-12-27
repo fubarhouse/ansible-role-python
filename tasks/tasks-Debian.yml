@@ -5,21 +5,17 @@
     name: "{{ item }}"
     state: installed
   with_items:
-    - make
+    - git
     - build-essential
-    - ca-certificates
     - libssl-dev
     - zlib1g-dev
     - libbz2-dev
     - libreadline-dev
     - libsqlite3-dev
-    - openssl
-    - python-openssl
-    - sudo
     - wget
     - curl
     - llvm
     - libncurses5-dev
     - libncursesw5-dev
     - xz-utils
-    - python-pip
+    - tk-dev
