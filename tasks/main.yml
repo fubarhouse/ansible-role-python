@@ -34,8 +34,8 @@
   include: python.yml
   when: install_python|bool == true
 
-#- name: "Include tasks for PyEnv updater"
-#  include: plugin-updater.yml
+- name: "Include tasks for PyEnv updater"
+  include: plugin-updater.yml
 
 - name: "Include Virtualenv tasks"
   include: plugin-virtualenv.yml
