@@ -37,8 +37,8 @@
 #- name: "Include tasks for PyEnv updater"
 #  include: plugin-updater.yml
 
-#- name: "Include Virtualenv tasks"
-#  include: plugin-virtualenv.yml
+- name: "Include Virtualenv tasks"
+  include: plugin-virtualenv.yml
 
 - name: "Include Pypi tasks"
   include: pypi.yml
