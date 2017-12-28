@@ -4,6 +4,7 @@
   vars:
     python_version: 2.7.13
     python_versions: []
+
   pre_tasks:
     - name: Update yum cache.
       yum:
@@ -19,36 +20,6 @@
         cache_valid_time: 600
       changed_when: false
       failed_when: false
-      when: ansible_os_family == 'Debian'
-
-    - name: Install dependencies (RedHat)
-      dnf:
-        name: "{{ item }}"
-        state: installed
-      with_items:
-        - compat-openssl10-devel
-      failed_when: false
-      changed_when: false
-      when:
-        - ansible_os_family == "RedHat"
-        - ansible_distribution != "CentOS"
-
-    - name: Install dependencies (Debian)
-      apt:
-        name: "{{ item }}"
-        state: installed
-      with_items:
-        - git
-        - git-core
-        - python-pip
-      failed_when: false
-      changed_when: false
-      when: ansible_os_family == 'Debian'
-
-    - name: Upgrade pip
-      shell: pip install --upgrade pip
-      failed_when: false
-      changed_when: false
       when: ansible_os_family == 'Debian'
 
   roles:
