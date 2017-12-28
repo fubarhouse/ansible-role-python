@@ -1,32 +1,45 @@
 ---
 # file: roles/fubarhouse.python/tasks/main.yml
 
-- name: "Define OS-specific variables"
-  include_vars: "config-{{ ansible_os_family }}.yml"
-  when: fubarhouse_python is not defined
+- name: "Include setup tasks"
+  include: setup.yml
 
-- name: debug
-  debug:
-    msg: "{{ fubarhouse_user_dir }}"
+- name: "Include cleanup tasks"
+  include: cleanup.yml
+  when: pyenv_clean_install|bool == true
 
-- name: debug
-  debug:
-    msg: "{{ fubarhouse_python.main_dir }}"
+- name: "Python | Include OS-Specific tasks (CentOS)"
+  include: tasks-CentOS.yml
+  when: ansible_distribution == "CentOS"
 
-- name: debug
-  debug:
-    msg: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}"
+- name: "Python | Include OS-Specific tasks (Darwin)"
+  include: tasks-Darwin.yml
+  when: ansible_os_family == "tasks-Darwin"
 
-- include: "dependencies-{{ ansible_os_family}}.yml"
+- name: "Python | Include OS-Specific tasks (Debian)"
+  include: tasks-Debian.yml
+  when: ansible_os_family == "Debian"
 
-- include: pyenv.yml
-  when: fubarhouse_python.install_pyenv
+- name: "Python | Include OS-Specific tasks (RedHat)"
+  include: tasks-RedHat.yml
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution != "CentOS"
 
-- include: python.yml
-  when: fubarhouse_python.install_python
+- name: "Include tasks for PyEnv installation"
+  include: pyenv.yml
+  when: install_pyenv|bool == true
 
-- include: plugin-updater.yml
-- include: plugin-virtualenv.yml
+- name: "Include tasks for Python installation"
+  include: python.yml
+  when: install_python|bool == true
 
-- include: pypi.yml
-  when: fubarhouse_python.install_pypi
+- name: "Include tasks for PyEnv updater"
+  include: plugin-updater.yml
+
+- name: "Include Virtualenv tasks"
+  include: plugin-virtualenv.yml
+
+- name: "Include Pypi tasks"
+  include: pypi.yml
+  when: install_pypi|bool == true

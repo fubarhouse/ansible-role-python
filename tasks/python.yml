@@ -2,20 +2,19 @@
 # file: roles/fubarhouse.python/tasks/python.yml
 
 - name: "Python | Check python versions"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.pyenv_symlink_exec }} versions"
+  shell: "{{ pyenv_symlink_exec }} versions"
   register: installed_python_versions
+  changed_when: false
 
-- name: "Python | Install default version"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.pyenv_symlink_exec }} --debug install {{ python_version }}"
-  when: '"{{ python_version }}" not in "{{ python_versions }}" and "{{ python_version }}" not in "{{ installed_python_versions.stdout }}"'
+- name: "Python | Install Python"
+  shell: "{{ pyenv_symlink_exec }} --debug install {{ item }}"
+  with_items:
+    - "{{ python_version }}"
+    - "{{ python_versions }}"
+  register: python_installation
+  when: 'item not in installed_python_versions.stdout'
 
-- name: "Python | Install all requested versions"
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_python.pyenv_symlink_exec }} --debug install {{ item }}"
-  with_items: "{{ python_versions }}"
-  when: '"{{ item }}" not in installed_python_versions.stdout'
+- name: "Python | Verify python versions"
+  shell: "{{ pyenv_symlink_exec }} versions"
+  register: newly_installed_python_versions
+  changed_when: false

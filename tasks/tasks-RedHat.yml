@@ -1,22 +1,17 @@
 ---
 
 - name: "Installing dependencies"
-  become: yes
-  become_user: "root"
-  yum:
+  dnf:
     name: "{{ item }}"
     state: installed
   with_items:
     - git
-    - gcc
-    - git
-    - patch
     - zlib-devel
     - bzip2
     - bzip2-devel
     - readline-devel
     - sqlite
     - sqlite-devel
-    - sudo
-    - which
     - openssl-devel
+    - xz
+    - xz-devel

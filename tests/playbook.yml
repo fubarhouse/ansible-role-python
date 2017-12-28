@@ -1,0 +1,26 @@
+---
+
+- hosts: all
+  vars:
+    python_version: 2.7.13
+    python_versions: []
+
+  pre_tasks:
+    - name: Update yum cache.
+      yum:
+        update_cache: yes
+        state: latest
+      changed_when: false
+      failed_when: false
+      when: ansible_os_family == 'RedHat'
+
+    - name: Update apt cache.
+      apt:
+        update_cache: yes
+        cache_valid_time: 600
+      changed_when: false
+      failed_when: false
+      when: ansible_os_family == 'Debian'
+
+  roles:
+  - role_under_test

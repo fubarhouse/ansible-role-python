@@ -1,18 +1,14 @@
 ---
 
 - name: PyEnv | Cloning/Updating updater
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
   git:
-    repo: "{{ fubarhouse_python.repo_pyenv_updater }}"
-    dest: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}"
+    repo: "{{ repo_pyenv_updater }}"
+    dest: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}/{{ pyenv_updater_path }}"
     clone: yes
-    update: yes
-    force: yes
-    version: master
+    update: no
+    force: no
     recursive: false
 
 - name: PyEnv | Ensure updated
-  become: yes
-  become_user: "{{ fubarhouse_user }}"
-  shell: "{{ fubarhouse_user_dir }}/{{ fubarhouse_python.main_dir }}/{{ fubarhouse_python.updater_path }}/{{ fubarhouse_python.updater_exec }}"
+  shell: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}/{{ pyenv_updater_path }}/{{ pyenv_updater_exec }} | cat"
+  changed_when: false

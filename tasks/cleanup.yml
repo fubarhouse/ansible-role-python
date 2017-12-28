@@ -1,0 +1,22 @@
+---
+
+- name: "PyEnv | Clean-up"
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+   - "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}"
+   - "{{ pyenv_symlink_exec }}"
+
+- name: "PyEnv | Ensure shell profiles are clean"
+  lineinfile:
+    dest: "{{ fubarhouse_user_dir }}/{{ item[0].filename }}"
+    regexp: "{{ item[1].regex }}"
+    line: "{{ item[1].lineinfile }}"
+    state: absent
+  with_nested:
+  - "{{ shell_profiles }}"
+  - "{{ fubarhouse_python_shell_exports }}"
+  failed_when: false
+  when:
+    - shell_profiles is defined

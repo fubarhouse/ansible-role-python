@@ -1,26 +1,22 @@
 ---
 
 - name: "Installing dependencies"
-  become: yes
-  become_user: "root"
   apt:
     name: "{{ item }}"
     state: installed
   with_items:
     - git
-    - make
+    - python-pip
     - build-essential
-    - ca-certificates
     - libssl-dev
     - zlib1g-dev
     - libbz2-dev
     - libreadline-dev
     - libsqlite3-dev
-    - openssl
-    - sudo
     - wget
     - curl
     - llvm
     - libncurses5-dev
     - libncursesw5-dev
     - xz-utils
+    - tk-dev
