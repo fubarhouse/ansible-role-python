@@ -6,6 +6,7 @@
     state: installed
   with_items:
     - git
+    - python-pip
     - build-essential
     - libssl-dev
     - zlib1g-dev
