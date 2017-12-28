@@ -33,8 +33,8 @@
 - name: VirtualEnv | Setup virtualenvs list
   set_fact:
     virtualenvs:
-    - name: "Global-{{ python_version }}"
-      version: "{{ python_version }}"
+      - name: "Global-{{ python_version }}"
+        version: "{{ python_version }}"
   when: virtualenvs is undefined
 
 - name: VirtualEnv | Setup default virtualenv
