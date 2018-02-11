@@ -1,8 +1,9 @@
 # Ansible Role: Python
 
-[![Build Status](https://travis-ci.org/fubarhouse/ansible-role-python.svg?branch=master)](https://travis-ci.org/fubarhouse/ansible-role-python)
-[![Ansible Galaxy](https://img.shields.io/ansible/role/5140.svg)](https://galaxy.ansible.com/fubarhouse/python)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/fubarhouse/ansible-role-hub/master/LICENSE)
+[![Build Status](https://img.shields.io/travis/fubarhouse/ansible-role-python/master.svg?style=for-the-badge)](https://travis-ci.org/fubarhouse/ansible-role-python)
+[![stability-stable](https://img.shields.io/badge/stability-stable-green.svg?style=for-the-badge)](https://github.com/orangemug/stability-badges)
+[![Ansible Galaxy](https://img.shields.io/ansible/role/5140.svg?style=for-the-badge)](https://galaxy.ansible.com/fubarhouse/python)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://raw.githubusercontent.com/fubarhouse/ansible-role-hub/master/LICENSE)
 
 * PyEnv on CentOS/Darwin/Debian/RedHat servers.
 * Installs multiple python versions as required.
