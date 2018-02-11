@@ -23,7 +23,7 @@ galaxy_info:
     versions:
       - artful
       - zesty
-      - yakkety
+#      - yakkety
       - xenial
       - vivid
       - wily
