@@ -2,7 +2,7 @@
 
 - hosts: all
   vars:
-    python_version: 2.7.13
+    python_version: 2.7.15
     python_versions: []
 
   pre_tasks:

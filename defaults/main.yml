@@ -9,9 +9,9 @@ install_python: true
 install_pypi: true
 
 pyenv_clean_install: false
-python_version: 2.7.11
+python_version: 2.7.15
 python_versions:
-- 2.7.11
+- 2.7.15
 - 3.5.1
 
 pypi_path: "versions/{{ python_version }}/bin"
