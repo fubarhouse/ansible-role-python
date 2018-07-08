@@ -19,6 +19,7 @@ galaxy_info:
       - 24
       - 25
       - 26
+      - 28
   - name: Ubuntu
     versions:
       - artful
