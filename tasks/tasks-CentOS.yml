@@ -15,7 +15,6 @@
     - readline-devel
     - sqlite
     - sqlite-devel
-    - sudo
     - which
     - openssl-devel
     - python-pip
