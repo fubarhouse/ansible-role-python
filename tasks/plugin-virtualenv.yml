@@ -44,7 +44,7 @@
 
 - name: VirtualEnv | Switching Python back to system
   shell: "{{ pyenv_symlink_exec }} global system"
-  when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
+  when: 'virtualenv not in virtualenv_current_version.stdout_lines'
 
 - name: VirtualEnv | Install virtual environment
   shell: "{{ pyenv_symlink_exec }} virtualenv {{ item.version }} {{ item.name }}"
@@ -54,13 +54,13 @@
 - name: VirtualEnv | Set virtual environment to default
   shell: "{{ pyenv_symlink_exec }} global {{ virtualenv }}"
   with_items: "{{ virtualenvs }}"
-  when: '"{{ item.name }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
+  when: 'item.name not in not in virtualenv_current_version.stdout_lines'
 
 - name: VirtualEnv | Verify current version
   shell: "{{ pyenv_symlink_exec }} virtualenvs | grep '*'"
   register: virtualenv_current_version_after_role
   failed_when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version_after_role.stdout_lines }}"'
-  when: '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
+  when: 'virtualenv not in virtualenv_current_version.stdout_lines'
 
 - name: VirtualEnv | Restart shell
   shell: "source {{ fubarhouse_user_dir }}/{{ item.filename }}"
@@ -68,4 +68,4 @@
   failed_when: false
   when:
     - shell_profiles is defined
-    - '"{{ virtualenv }}" not in "{{ virtualenv_current_version.stdout_lines }}"'
+    - 'virtualenv not in virtualenv_current_version.stdout_lines'
