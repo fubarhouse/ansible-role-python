@@ -49,12 +49,12 @@
 - name: VirtualEnv | Install virtual environment
   shell: "{{ pyenv_symlink_exec }} virtualenv {{ item.version }} {{ item.name }}"
   with_items: "{{ virtualenvs }}"
-  when: 'item.name not in virtualenv_versions.stdout'
+  when: item.name not in virtualenv_versions.stdout
 
 - name: VirtualEnv | Set virtual environment to default
   shell: "{{ pyenv_symlink_exec }} global {{ virtualenv }}"
   with_items: "{{ virtualenvs }}"
-  when: 'item.name not in not in virtualenv_current_version.stdout_lines'
+  when: item.name not in virtualenv_current_version.stdout_lines
 
 - name: VirtualEnv | Verify current version
   shell: "{{ pyenv_symlink_exec }} virtualenvs | grep '*'"
@@ -68,4 +68,4 @@
   failed_when: false
   when:
     - shell_profiles is defined
-    - 'virtualenv not in virtualenv_current_version.stdout_lines'
+    - item.name not in virtualenv_versions.stdout
