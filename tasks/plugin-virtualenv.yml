@@ -44,7 +44,7 @@
 
 - name: VirtualEnv | Switching Python back to system
   shell: "{{ pyenv_symlink_exec }} global system"
-  when: 'virtualenv not in virtualenv_current_version.stdout_lines'
+  changed_when: false
 
 - name: VirtualEnv | Install virtual environment
   shell: "{{ pyenv_symlink_exec }} virtualenv {{ item.version }} {{ item.name }}"
@@ -54,7 +54,7 @@
 - name: VirtualEnv | Set virtual environment to default
   shell: "{{ pyenv_symlink_exec }} global {{ virtualenv }}"
   with_items: "{{ virtualenvs }}"
-  when: item.name not in virtualenv_current_version.stdout_lines
+  when: item.name not in virtualenv_current_version.stdout_lines and item.name not in virtualenv_versions.stdout
 
 - name: VirtualEnv | Verify current version
   shell: "{{ pyenv_symlink_exec }} virtualenvs | grep '*'"
