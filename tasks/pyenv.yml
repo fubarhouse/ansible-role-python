@@ -19,15 +19,6 @@
     force: no
     recursive: false
 
-- debug:
-    msg: "git clone {{ repo_pyenv }} {{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}"
-
-- debug:
-    msg: "D: {{ pyenv_symlink_exec }}"
-
-- debug:
-    msg: "S: {{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }}"
-
 - name: "PyEnv | Create symlink"
   file:
     src: "{{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }}"
