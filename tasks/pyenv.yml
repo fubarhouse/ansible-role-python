@@ -3,10 +3,9 @@
 
 - name: "PyEnv | Check directory permissions"
   file:
-    path: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}"
+    path: "{{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}"
     state: directory
     mode: 0755
-    owner: "{{ fubarhouse_user }}"
     recurse: yes
   failed_when: false
   changed_when: false
@@ -14,23 +13,31 @@
 - name: "PyEnv | Cloning/Updating"
   git:
     repo: "{{ repo_pyenv }}"
-    dest: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}"
+    dest: "{{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}"
     clone: yes
     update: no
     force: no
     recursive: false
 
+- debug:
+    msg: "git clone {{ repo_pyenv }} {{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}"
+
+- debug:
+    msg: "D: {{ pyenv_symlink_exec }}"
+
+- debug:
+    msg: "S: {{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }}"
+
 - name: "PyEnv | Create symlink"
   file:
-    src: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }}"
+    src: "{{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }}"
     dest: "{{ pyenv_symlink_exec }}"
-    owner: "{{ fubarhouse_user }}"
     mode: 0755
     state: link
 
 - name: "PyEnv | Ensure shell profiles are available"
   file:
-    path: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
+    path: "{{ shell_home_dir.stdout }}/{{ item.filename }}"
     state: touch
   with_items: "{{ shell_profiles }}"
   failed_when: false
@@ -38,7 +45,7 @@
 
 - name: "PyEnv | Ensure shell profiles are configured"
   lineinfile:
-    dest: "{{ fubarhouse_user_dir }}/{{ item[0].filename }}"
+    dest: "{{ shell_home_dir.stdout }}/{{ item[0].filename }}"
     regexp: "{{ item[1].regex }}"
     line: "{{ item[1].lineinfile }}"
     state: present
