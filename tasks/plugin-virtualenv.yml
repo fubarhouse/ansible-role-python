@@ -3,7 +3,7 @@
 - name: VirtualEnv | Cloning/Updating
   git:
     repo: "{{ repo_virtualenv }}"
-    dest: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}/plugins/pyenv-virtualenv"
+    dest: "{{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}/plugins/pyenv-virtualenv"
     clone: yes
     update: no
     force: no
@@ -11,9 +11,9 @@
 
 - name: VirtualEnv | Ensure shell profiles are configured
   lineinfile:
-    dest: "{{ fubarhouse_user_dir }}/{{ item.filename }}"
-    regexp: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }} virtualenv-init -"
-    line: "eval \"$({{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }} virtualenv-init -)\""
+    dest: "{{ shell_home_dir.stdout }}/{{ item.filename }}"
+    regexp: "{{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }} virtualenv-init -"
+    line: "eval \"$({{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}/{{ pyenv_bin_path }}/{{ pyenv_main_exec }} virtualenv-init -)\""
     state: present
   with_items: "{{ shell_profiles }}"
   ignore_errors: yes
@@ -68,7 +68,7 @@
   changed_when: false
 
 - name: VirtualEnv | Restart shell
-  shell: "source {{ fubarhouse_user_dir }}/{{ item.filename }}"
+  shell: "source {{ shell_home_dir.stdout }}/{{ item.filename }}"
   with_items: "{{ shell_profiles }}"
   failed_when: false
   when:

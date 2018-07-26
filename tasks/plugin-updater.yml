@@ -3,12 +3,12 @@
 - name: PyEnv | Cloning/Updating updater
   git:
     repo: "{{ repo_pyenv_updater }}"
-    dest: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}/{{ pyenv_updater_path }}"
+    dest: "{{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}/{{ pyenv_updater_path }}"
     clone: yes
     update: no
     force: no
     recursive: false
 
 - name: PyEnv | Ensure updated
-  shell: "{{ fubarhouse_user_dir }}/{{ pyenv_main_dir }}/{{ pyenv_updater_path }}/{{ pyenv_updater_exec }} | cat"
+  shell: "{{ shell_home_dir.stdout }}/{{ pyenv_main_dir }}/{{ pyenv_updater_path }}/{{ pyenv_updater_exec }} | cat"
   changed_when: false
